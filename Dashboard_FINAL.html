@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico de Salud Digital - Educación en Línea</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 30px 40px;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filters {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover {
+            background: #f0f3ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .export-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        #plot {
+            width: 100%;
+            height: 700px;
+            margin-top: 20px;
+        }
+
+        .legend-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-text {
+            font-size: 0.95em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Diagnóstico de Salud Digital</h1>
+            <p>Análisis de Comentarios de Estudiantes - Educación en Línea</p>
+        </div>
+
+        <div class="content">
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="metric-value">37</div>
+                    <div class="metric-label">Materias</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">5,723</div>
+                    <div class="metric-label">Total Comentarios</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">1,467</div>
+                    <div class="metric-label">Comentarios Negativos</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">25.6%</div>
+                    <div class="metric-label">Tasa de Fricción</div>
+                </div>
+            </div>
+
+            <div class="filters">
+                <div class="filter-label">📂 Filtrar por Departamento:</div>
+                <div class="filter-buttons" id="filterButtons"></div>
+            </div>
+
+            <div id="plot"></div>
+
+            <div class="legend-box">
+                <div class="legend-title">📖 Leyenda del Dashboard</div>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: #10b981;"></div>
+                        <div class="legend-text"><strong>Verde:</strong> Menos del 15% de comentarios negativos</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: #f59e0b;"></div>
+                        <div class="legend-text"><strong>Amarillo:</strong> Entre 15% y 30% de comentarios negativos</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: #ef4444;"></div>
+                        <div class="legend-text"><strong>Rojo:</strong> Más del 30% de comentarios negativos</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: #667eea; width: 30px; height: 30px;"></div>
+                        <div class="legend-text"><strong>Tamaño grande:</strong> Mayor volumen de comentarios</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="export-btn" onclick="exportToPNG()">📥 Exportar a PNG</button>
+
+    <script>
+        // Datos embebidos
+        const allData = [{"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "ADMINISTRACIÓN ESTRATÉGICA", "promedio_cae": 4.723333333333334, "total_comentarios": 242, "comentarios_negativos": 32, "comentarios_positivos": 145, "comentarios_neutros": 65.0, "dolor_docente": 6.0, "dolor_actividades": 10.0, "dolor_contenido": 5.0, "dolor_plataforma": 2.0, "dolor_modalidad": 6.0, "dolor_equipo": 1.0, "dolor_otros": 2.0, "pct_negativos": 13.22, "pct_dolor_docente": 18.8, "pct_dolor_actividades": 31.2, "pct_dolor_contenido": 15.6, "pct_dolor_plataforma": 6.2, "pct_dolor_modalidad": 18.8, "pct_dolor_equipo": 3.1, "pct_dolor_otros": 6.2, "pct_positivos": 59.9, "pct_neutros": 26.9, "color": "#10b981"}, {"departamento": "919 - DEPARTAMENTO DE INGENIERÍAS", "materia": "BIOÉTICA", "promedio_cae": 4.505, "total_comentarios": 58, "comentarios_negativos": 22, "comentarios_positivos": 28, "comentarios_neutros": 8.0, "dolor_docente": 5.0, "dolor_actividades": 1.0, "dolor_contenido": 2.0, "dolor_plataforma": 3.0, "dolor_modalidad": 5.0, "dolor_equipo": 6.0, "dolor_otros": 0, "pct_negativos": 37.93, "pct_dolor_docente": 22.7, "pct_dolor_actividades": 4.5, "pct_dolor_contenido": 9.1, "pct_dolor_plataforma": 13.6, "pct_dolor_modalidad": 22.7, "pct_dolor_equipo": 27.3, "pct_dolor_otros": 0.0, "pct_positivos": 48.3, "pct_neutros": 13.8, "color": "#ef4444"}, {"departamento": "905 - DEPARTAMENTO DE CIENCIAS SOCIALES Y HUMANIDADES", "materia": "COMUNICACIÓN POLÍTICA Y LEGISLACIÓN DE MEDIOS", "promedio_cae": 4.285, "total_comentarios": 32, "comentarios_negativos": 14, "comentarios_positivos": 9, "comentarios_neutros": 9.0, "dolor_docente": 1.0, "dolor_actividades": 2.0, "dolor_contenido": 5.0, "dolor_plataforma": 0, "dolor_modalidad": 5.0, "dolor_equipo": 0, "dolor_otros": 1.0, "pct_negativos": 43.75, "pct_dolor_docente": 7.1, "pct_dolor_actividades": 14.3, "pct_dolor_contenido": 35.7, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 35.7, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 7.1, "pct_positivos": 28.1, "pct_neutros": 28.1, "color": "#ef4444"}, {"departamento": "925 - COORDINACIÓN DE EMPRENDIMIENTO UNIVERSITARIO", "materia": "CREACIÓN DE NEGOCIOS", "promedio_cae": 4.580666666666667, "total_comentarios": 346, "comentarios_negativos": 73, "comentarios_positivos": 177, "comentarios_neutros": 96.0, "dolor_docente": 31.0, "dolor_actividades": 14.0, "dolor_contenido": 11.0, "dolor_plataforma": 0, "dolor_modalidad": 2.0, "dolor_equipo": 9.0, "dolor_otros": 6.0, "pct_negativos": 21.1, "pct_dolor_docente": 42.5, "pct_dolor_actividades": 19.2, "pct_dolor_contenido": 15.1, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 2.7, "pct_dolor_equipo": 12.3, "pct_dolor_otros": 8.2, "pct_positivos": 51.2, "pct_neutros": 27.7, "color": "#f59e0b"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "CRÍTICA DEL ARTE Y CULTURA", "promedio_cae": 4.95, "total_comentarios": 56, "comentarios_negativos": 10, "comentarios_positivos": 35, "comentarios_neutros": 11.0, "dolor_docente": 0, "dolor_actividades": 4.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 5.0, "dolor_equipo": 1.0, "dolor_otros": 0, "pct_negativos": 17.86, "pct_dolor_docente": 0.0, "pct_dolor_actividades": 40.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 50.0, "pct_dolor_equipo": 10.0, "pct_dolor_otros": 0.0, "pct_positivos": 62.5, "pct_neutros": 19.6, "color": "#f59e0b"}, {"departamento": "4 - CIENCIAS JURÍDICAS", "materia": "DERECHO DE LOS NEGOCIOS", "promedio_cae": 4.4, "total_comentarios": 4, "comentarios_negativos": 1, "comentarios_positivos": 3, "comentarios_neutros": 0, "dolor_docente": 0, "dolor_actividades": 1.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 25.0, "pct_dolor_docente": 0.0, "pct_dolor_actividades": 100.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 75.0, "pct_neutros": 0, "color": "#f59e0b"}, {"departamento": "905 - DEPARTAMENTO DE CIENCIAS SOCIALES Y HUMANIDADES", "materia": "DERECHO INTERNACIONAL PRIVADO", "promedio_cae": 4.2, "total_comentarios": 180, "comentarios_negativos": 70, "comentarios_positivos": 68, "comentarios_neutros": 42.0, "dolor_docente": 17.0, "dolor_actividades": 11.0, "dolor_contenido": 12.0, "dolor_plataforma": 11.0, "dolor_modalidad": 18.0, "dolor_equipo": 0, "dolor_otros": 1.0, "pct_negativos": 38.89, "pct_dolor_docente": 24.3, "pct_dolor_actividades": 15.7, "pct_dolor_contenido": 17.1, "pct_dolor_plataforma": 15.7, "pct_dolor_modalidad": 25.7, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 1.4, "pct_positivos": 37.8, "pct_neutros": 23.3, "color": "#ef4444"}, {"departamento": "912 - CENTRO DE FORMACIÓN HUMANISTA", "materia": "DESAFÍOS ÉTICOS DE LA CIENCIA Y LA TECNOLOGÍA", "promedio_cae": 4.776250000000001, "total_comentarios": 298, "comentarios_negativos": 48, "comentarios_positivos": 173, "comentarios_neutros": 77.0, "dolor_docente": 13.0, "dolor_actividades": 20.0, "dolor_contenido": 8.0, "dolor_plataforma": 2.0, "dolor_modalidad": 2.0, "dolor_equipo": 0, "dolor_otros": 3.0, "pct_negativos": 16.11, "pct_dolor_docente": 27.1, "pct_dolor_actividades": 41.7, "pct_dolor_contenido": 16.7, "pct_dolor_plataforma": 4.2, "pct_dolor_modalidad": 4.2, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 6.2, "pct_positivos": 58.1, "pct_neutros": 25.8, "color": "#f59e0b"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "DISEÑO DE CONTENIDOS DIGITALES", "promedio_cae": 4.215, "total_comentarios": 40, "comentarios_negativos": 13, "comentarios_positivos": 17, "comentarios_neutros": 10.0, "dolor_docente": 1.0, "dolor_actividades": 3.0, "dolor_contenido": 1.0, "dolor_plataforma": 0, "dolor_modalidad": 8.0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 32.5, "pct_dolor_docente": 7.7, "pct_dolor_actividades": 23.1, "pct_dolor_contenido": 7.7, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 61.5, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 42.5, "pct_neutros": 25.0, "color": "#ef4444"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "DISEÑO DE JUEGOS", "promedio_cae": 4.6, "total_comentarios": 124, "comentarios_negativos": 51, "comentarios_positivos": 45, "comentarios_neutros": 28.0, "dolor_docente": 8.0, "dolor_actividades": 3.0, "dolor_contenido": 7.0, "dolor_plataforma": 4.0, "dolor_modalidad": 29.0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 41.13, "pct_dolor_docente": 15.7, "pct_dolor_actividades": 5.9, "pct_dolor_contenido": 13.7, "pct_dolor_plataforma": 7.8, "pct_dolor_modalidad": 56.9, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 36.3, "pct_neutros": 22.6, "color": "#ef4444"}, {"departamento": "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "materia": "DISEÑO DE PROYECTOS DE INTERVENCIÓN", "promedio_cae": 4.3999999999999995, "total_comentarios": 82, "comentarios_negativos": 38, "comentarios_positivos": 31, "comentarios_neutros": 13.0, "dolor_docente": 6.0, "dolor_actividades": 11.0, "dolor_contenido": 2.0, "dolor_plataforma": 3.0, "dolor_modalidad": 14.0, "dolor_equipo": 0, "dolor_otros": 2.0, "pct_negativos": 46.34, "pct_dolor_docente": 15.8, "pct_dolor_actividades": 28.9, "pct_dolor_contenido": 5.3, "pct_dolor_plataforma": 7.9, "pct_dolor_modalidad": 36.8, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 5.3, "pct_positivos": 37.8, "pct_neutros": 15.9, "color": "#ef4444"}, {"departamento": "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "materia": "ÉTICA PROFESIONAL DE LA PSICOLOGÍA", "promedio_cae": 4.63, "total_comentarios": 144, "comentarios_negativos": 53, "comentarios_positivos": 49, "comentarios_neutros": 42.0, "dolor_docente": 5.0, "dolor_actividades": 14.0, "dolor_contenido": 3.0, "dolor_plataforma": 1.0, "dolor_modalidad": 28.0, "dolor_equipo": 1.0, "dolor_otros": 1.0, "pct_negativos": 36.81, "pct_dolor_docente": 9.4, "pct_dolor_actividades": 26.4, "pct_dolor_contenido": 5.7, "pct_dolor_plataforma": 1.9, "pct_dolor_modalidad": 52.8, "pct_dolor_equipo": 1.9, "pct_dolor_otros": 1.9, "pct_positivos": 34.0, "pct_neutros": 29.2, "color": "#ef4444"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "FINANZAS INTERNACIONALES", "promedio_cae": 4.404999999999999, "total_comentarios": 124, "comentarios_negativos": 23, "comentarios_positivos": 75, "comentarios_neutros": 26.0, "dolor_docente": 6.0, "dolor_actividades": 3.0, "dolor_contenido": 4.0, "dolor_plataforma": 1.0, "dolor_modalidad": 9.0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 18.55, "pct_dolor_docente": 26.1, "pct_dolor_actividades": 13.0, "pct_dolor_contenido": 17.4, "pct_dolor_plataforma": 4.3, "pct_dolor_modalidad": 39.1, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 60.5, "pct_neutros": 21.0, "color": "#f59e0b"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "FUNDAMENTOS DE URBANISMO", "promedio_cae": 4.755, "total_comentarios": 68, "comentarios_negativos": 17, "comentarios_positivos": 41, "comentarios_neutros": 10.0, "dolor_docente": 1.0, "dolor_actividades": 5.0, "dolor_contenido": 4.0, "dolor_plataforma": 0, "dolor_modalidad": 5.0, "dolor_equipo": 1.0, "dolor_otros": 1.0, "pct_negativos": 25.0, "pct_dolor_docente": 5.9, "pct_dolor_actividades": 29.4, "pct_dolor_contenido": 23.5, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 29.4, "pct_dolor_equipo": 5.9, "pct_dolor_otros": 5.9, "pct_positivos": 60.3, "pct_neutros": 14.7, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "GESTIÓN DE PROYECTOS", "promedio_cae": 4.301, "total_comentarios": 318, "comentarios_negativos": 96, "comentarios_positivos": 138, "comentarios_neutros": 84.0, "dolor_docente": 29.0, "dolor_actividades": 21.0, "dolor_contenido": 8.0, "dolor_plataforma": 4.0, "dolor_modalidad": 14.0, "dolor_equipo": 6.0, "dolor_otros": 14.0, "pct_negativos": 30.19, "pct_dolor_docente": 30.2, "pct_dolor_actividades": 21.9, "pct_dolor_contenido": 8.3, "pct_dolor_plataforma": 4.2, "pct_dolor_modalidad": 14.6, "pct_dolor_equipo": 6.2, "pct_dolor_otros": 14.6, "pct_positivos": 43.4, "pct_neutros": 26.4, "color": "#ef4444"}, {"departamento": "919 - DEPARTAMENTO DE INGENIERÍAS", "materia": "GESTIÓN DE PROYECTOS DE INGENIERÍA", "promedio_cae": 4.644444444444445, "total_comentarios": 190, "comentarios_negativos": 54, "comentarios_positivos": 97, "comentarios_neutros": 39.0, "dolor_docente": 21.0, "dolor_actividades": 11.0, "dolor_contenido": 8.0, "dolor_plataforma": 3.0, "dolor_modalidad": 7.0, "dolor_equipo": 2.0, "dolor_otros": 2.0, "pct_negativos": 28.42, "pct_dolor_docente": 38.9, "pct_dolor_actividades": 20.4, "pct_dolor_contenido": 14.8, "pct_dolor_plataforma": 5.6, "pct_dolor_modalidad": 13.0, "pct_dolor_equipo": 3.7, "pct_dolor_otros": 3.7, "pct_positivos": 51.1, "pct_neutros": 20.5, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "HABILIDADES DIRECTIVAS", "promedio_cae": 4.59, "total_comentarios": 18, "comentarios_negativos": 7, "comentarios_positivos": 6, "comentarios_neutros": 5.0, "dolor_docente": 1.0, "dolor_actividades": 3.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 0, "dolor_equipo": 3.0, "dolor_otros": 0, "pct_negativos": 38.89, "pct_dolor_docente": 14.3, "pct_dolor_actividades": 42.9, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 42.9, "pct_dolor_otros": 0.0, "pct_positivos": 33.3, "pct_neutros": 27.8, "color": "#ef4444"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "IMAGEN Y CULTURA", "promedio_cae": 4.92, "total_comentarios": 20, "comentarios_negativos": 5, "comentarios_positivos": 12, "comentarios_neutros": 3.0, "dolor_docente": 0, "dolor_actividades": 0, "dolor_contenido": 1.0, "dolor_plataforma": 2.0, "dolor_modalidad": 0, "dolor_equipo": 2.0, "dolor_otros": 0, "pct_negativos": 25.0, "pct_dolor_docente": 0.0, "pct_dolor_actividades": 0.0, "pct_dolor_contenido": 20.0, "pct_dolor_plataforma": 40.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 40.0, "pct_dolor_otros": 0.0, "pct_positivos": 60.0, "pct_neutros": 15.0, "color": "#f59e0b"}, {"departamento": "912 - CENTRO DE FORMACIÓN HUMANISTA", "materia": "LIBERTAD DESDE LA PERSPECTIVA CRISTIANA", "promedio_cae": 4.75875, "total_comentarios": 318, "comentarios_negativos": 40, "comentarios_positivos": 200, "comentarios_neutros": 78.0, "dolor_docente": 12.0, "dolor_actividades": 14.0, "dolor_contenido": 4.0, "dolor_plataforma": 3.0, "dolor_modalidad": 0, "dolor_equipo": 1.0, "dolor_otros": 6.0, "pct_negativos": 12.58, "pct_dolor_docente": 30.0, "pct_dolor_actividades": 35.0, "pct_dolor_contenido": 10.0, "pct_dolor_plataforma": 7.5, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 2.5, "pct_dolor_otros": 15.0, "pct_positivos": 62.9, "pct_neutros": 24.5, "color": "#10b981"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "MARKETING DIGITAL", "promedio_cae": 4.3566666666666665, "total_comentarios": 88, "comentarios_negativos": 35, "comentarios_positivos": 27, "comentarios_neutros": 26.0, "dolor_docente": 6.0, "dolor_actividades": 4.0, "dolor_contenido": 3.0, "dolor_plataforma": 0, "dolor_modalidad": 13.0, "dolor_equipo": 7.0, "dolor_otros": 2.0, "pct_negativos": 39.77, "pct_dolor_docente": 17.1, "pct_dolor_actividades": 11.4, "pct_dolor_contenido": 8.6, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 37.1, "pct_dolor_equipo": 20.0, "pct_dolor_otros": 5.7, "pct_positivos": 30.7, "pct_neutros": 29.5, "color": "#ef4444"}, {"departamento": "912 - CENTRO DE FORMACIÓN HUMANISTA", "materia": "PERSPECTIVA DE GÉNERO", "promedio_cae": 4.6075, "total_comentarios": 280, "comentarios_negativos": 72, "comentarios_positivos": 144, "comentarios_neutros": 64.0, "dolor_docente": 12.0, "dolor_actividades": 24.0, "dolor_contenido": 12.0, "dolor_plataforma": 4.0, "dolor_modalidad": 1.0, "dolor_equipo": 16.0, "dolor_otros": 3.0, "pct_negativos": 25.71, "pct_dolor_docente": 16.7, "pct_dolor_actividades": 33.3, "pct_dolor_contenido": 16.7, "pct_dolor_plataforma": 5.6, "pct_dolor_modalidad": 1.4, "pct_dolor_equipo": 22.2, "pct_dolor_otros": 4.2, "pct_positivos": 51.4, "pct_neutros": 22.9, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "PORTAFOLIOS DE INVERSIÓN", "promedio_cae": 4.308, "total_comentarios": 86, "comentarios_negativos": 33, "comentarios_positivos": 35, "comentarios_neutros": 18.0, "dolor_docente": 12.0, "dolor_actividades": 7.0, "dolor_contenido": 3.0, "dolor_plataforma": 1.0, "dolor_modalidad": 4.0, "dolor_equipo": 0, "dolor_otros": 6.0, "pct_negativos": 38.37, "pct_dolor_docente": 36.4, "pct_dolor_actividades": 21.2, "pct_dolor_contenido": 9.1, "pct_dolor_plataforma": 3.0, "pct_dolor_modalidad": 12.1, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 18.2, "pct_positivos": 40.7, "pct_neutros": 20.9, "color": "#ef4444"}, {"departamento": "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "materia": "PRÁCTICA PROFESIONAL I DE NUTRICIÓN Y CIENCIA DE LOS ALIMENTOS", "promedio_cae": 5.0, "total_comentarios": 10, "comentarios_negativos": 1, "comentarios_positivos": 9, "comentarios_neutros": 0, "dolor_docente": 0, "dolor_actividades": 1.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 10.0, "pct_dolor_docente": 0.0, "pct_dolor_actividades": 100.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 90.0, "pct_neutros": 0, "color": "#10b981"}, {"departamento": "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "materia": "PRÁCTICA PROFESIONAL II DE NUTRICIÓN Y CIENCIA DE LOS ALIMENTOS", "promedio_cae": 4.703333333333333, "total_comentarios": 31, "comentarios_negativos": 5, "comentarios_positivos": 21, "comentarios_neutros": 5.0, "dolor_docente": 1.0, "dolor_actividades": 3.0, "dolor_contenido": 0, "dolor_plataforma": 1.0, "dolor_modalidad": 0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 16.13, "pct_dolor_docente": 20.0, "pct_dolor_actividades": 60.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 20.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 67.7, "pct_neutros": 16.1, "color": "#f59e0b"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "PRÁCTICA VIVENCIAL EN TALLER ARTESANAL", "promedio_cae": 4.99, "total_comentarios": 38, "comentarios_negativos": 4, "comentarios_positivos": 33, "comentarios_neutros": 1.0, "dolor_docente": 1.0, "dolor_actividades": 2.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 0, "dolor_equipo": 0, "dolor_otros": 1.0, "pct_negativos": 10.53, "pct_dolor_docente": 25.0, "pct_dolor_actividades": 50.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 25.0, "pct_positivos": 86.8, "pct_neutros": 2.6, "color": "#10b981"}, {"departamento": "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "materia": "PROGRAMAS DE ALIMENTACIÓN Y NUTRICIÓN", "promedio_cae": 4.06, "total_comentarios": 30, "comentarios_negativos": 11, "comentarios_positivos": 9, "comentarios_neutros": 10.0, "dolor_docente": 4.0, "dolor_actividades": 3.0, "dolor_contenido": 1.0, "dolor_plataforma": 0, "dolor_modalidad": 2.0, "dolor_equipo": 1.0, "dolor_otros": 0, "pct_negativos": 36.67, "pct_dolor_docente": 36.4, "pct_dolor_actividades": 27.3, "pct_dolor_contenido": 9.1, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 18.2, "pct_dolor_equipo": 9.1, "pct_dolor_otros": 0.0, "pct_positivos": 30.0, "pct_neutros": 33.3, "color": "#ef4444"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "PROMOCIÓN DE VENTAS", "promedio_cae": 4.45, "total_comentarios": 164, "comentarios_negativos": 40, "comentarios_positivos": 84, "comentarios_neutros": 40.0, "dolor_docente": 16.0, "dolor_actividades": 3.0, "dolor_contenido": 3.0, "dolor_plataforma": 2.0, "dolor_modalidad": 7.0, "dolor_equipo": 7.0, "dolor_otros": 2.0, "pct_negativos": 24.39, "pct_dolor_docente": 40.0, "pct_dolor_actividades": 7.5, "pct_dolor_contenido": 7.5, "pct_dolor_plataforma": 5.0, "pct_dolor_modalidad": 17.5, "pct_dolor_equipo": 17.5, "pct_dolor_otros": 5.0, "pct_positivos": 51.2, "pct_neutros": 24.4, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "RESPONSABILIDAD SOCIAL CORPORATIVA", "promedio_cae": 4.5488888888888885, "total_comentarios": 466, "comentarios_negativos": 114, "comentarios_positivos": 223, "comentarios_neutros": 129.0, "dolor_docente": 29.0, "dolor_actividades": 30.0, "dolor_contenido": 17.0, "dolor_plataforma": 5.0, "dolor_modalidad": 14.0, "dolor_equipo": 14.0, "dolor_otros": 5.0, "pct_negativos": 24.46, "pct_dolor_docente": 25.4, "pct_dolor_actividades": 26.3, "pct_dolor_contenido": 14.9, "pct_dolor_plataforma": 4.4, "pct_dolor_modalidad": 12.3, "pct_dolor_equipo": 12.3, "pct_dolor_otros": 4.4, "pct_positivos": 47.9, "pct_neutros": 27.7, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "SISTEMAS ORGANIZACIONALES", "promedio_cae": 4.596666666666667, "total_comentarios": 90, "comentarios_negativos": 18, "comentarios_positivos": 51, "comentarios_neutros": 21.0, "dolor_docente": 1.0, "dolor_actividades": 11.0, "dolor_contenido": 3.0, "dolor_plataforma": 0, "dolor_modalidad": 1.0, "dolor_equipo": 0, "dolor_otros": 2.0, "pct_negativos": 20.0, "pct_dolor_docente": 5.6, "pct_dolor_actividades": 61.1, "pct_dolor_contenido": 16.7, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 5.6, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 11.1, "pct_positivos": 56.7, "pct_neutros": 23.3, "color": "#f59e0b"}, {"departamento": "912 - CENTRO DE FORMACIÓN HUMANISTA", "materia": "SOCIEDAD Y CULTURA DE PAZ", "promedio_cae": 4.572222222222223, "total_comentarios": 302, "comentarios_negativos": 76, "comentarios_positivos": 146, "comentarios_neutros": 80.0, "dolor_docente": 20.0, "dolor_actividades": 33.0, "dolor_contenido": 10.0, "dolor_plataforma": 6.0, "dolor_modalidad": 2.0, "dolor_equipo": 1.0, "dolor_otros": 4.0, "pct_negativos": 25.17, "pct_dolor_docente": 26.3, "pct_dolor_actividades": 43.4, "pct_dolor_contenido": 13.2, "pct_dolor_plataforma": 7.9, "pct_dolor_modalidad": 2.6, "pct_dolor_equipo": 1.3, "pct_dolor_otros": 5.3, "pct_positivos": 48.3, "pct_neutros": 26.5, "color": "#f59e0b"}, {"departamento": "912 - CENTRO DE FORMACIÓN HUMANISTA", "materia": "SOCIEDAD Y DESARROLLO", "promedio_cae": 4.785, "total_comentarios": 274, "comentarios_negativos": 46, "comentarios_positivos": 162, "comentarios_neutros": 66.0, "dolor_docente": 11.0, "dolor_actividades": 23.0, "dolor_contenido": 6.0, "dolor_plataforma": 1.0, "dolor_modalidad": 0, "dolor_equipo": 2.0, "dolor_otros": 3.0, "pct_negativos": 16.79, "pct_dolor_docente": 23.9, "pct_dolor_actividades": 50.0, "pct_dolor_contenido": 13.0, "pct_dolor_plataforma": 2.2, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 4.3, "pct_dolor_otros": 6.5, "pct_positivos": 59.1, "pct_neutros": 24.1, "color": "#f59e0b"}, {"departamento": "905 - DEPARTAMENTO DE CIENCIAS SOCIALES Y HUMANIDADES", "materia": "SOCIOLOGÍA JURÍDICA", "promedio_cae": 4.1025, "total_comentarios": 130, "comentarios_negativos": 55, "comentarios_positivos": 42, "comentarios_neutros": 33.0, "dolor_docente": 13.0, "dolor_actividades": 14.0, "dolor_contenido": 7.0, "dolor_plataforma": 0, "dolor_modalidad": 18.0, "dolor_equipo": 1.0, "dolor_otros": 2.0, "pct_negativos": 42.31, "pct_dolor_docente": 23.6, "pct_dolor_actividades": 25.5, "pct_dolor_contenido": 12.7, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 32.7, "pct_dolor_equipo": 1.8, "pct_dolor_otros": 3.6, "pct_positivos": 32.3, "pct_neutros": 25.4, "color": "#ef4444"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "TALLER DE SÍNTESIS Y EVALUACIÓN DE CIENCIAS ECONÓMICO ADMINISTRATIVAS II", "promedio_cae": 4.4750000000000005, "total_comentarios": 564, "comentarios_negativos": 135, "comentarios_positivos": 297, "comentarios_neutros": 132.0, "dolor_docente": 48.0, "dolor_actividades": 37.0, "dolor_contenido": 10.0, "dolor_plataforma": 6.0, "dolor_modalidad": 20.0, "dolor_equipo": 7.0, "dolor_otros": 7.0, "pct_negativos": 23.94, "pct_dolor_docente": 35.6, "pct_dolor_actividades": 27.4, "pct_dolor_contenido": 7.4, "pct_dolor_plataforma": 4.4, "pct_dolor_modalidad": 14.8, "pct_dolor_equipo": 5.2, "pct_dolor_otros": 5.2, "pct_positivos": 52.7, "pct_neutros": 23.4, "color": "#f59e0b"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "TALLER DE SÍNTESIS Y EVALUACIÓN DE DISEÑO DE PRODUCTO III", "promedio_cae": 4.875, "total_comentarios": 38, "comentarios_negativos": 6, "comentarios_positivos": 29, "comentarios_neutros": 3.0, "dolor_docente": 4.0, "dolor_actividades": 2.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 15.79, "pct_dolor_docente": 66.7, "pct_dolor_actividades": 33.3, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 76.3, "pct_neutros": 7.9, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "TEMAS SELECTOS DE CONTADURÍA Y ESTRATEGIAS FINANCIERAS I", "promedio_cae": 4.905, "total_comentarios": 46, "comentarios_negativos": 4, "comentarios_positivos": 29, "comentarios_neutros": 13.0, "dolor_docente": 2.0, "dolor_actividades": 1.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 1.0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 8.7, "pct_dolor_docente": 50.0, "pct_dolor_actividades": 25.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 25.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 63.0, "pct_neutros": 28.3, "color": "#10b981"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "TEORÍA E HISTORIA DE LA ARQUITECTURA I", "promedio_cae": 4.4775, "total_comentarios": 210, "comentarios_negativos": 86, "comentarios_positivos": 92, "comentarios_neutros": 32.0, "dolor_docente": 12.0, "dolor_actividades": 25.0, "dolor_contenido": 6.0, "dolor_plataforma": 4.0, "dolor_modalidad": 36.0, "dolor_equipo": 1.0, "dolor_otros": 2.0, "pct_negativos": 40.95, "pct_dolor_docente": 14.0, "pct_dolor_actividades": 29.1, "pct_dolor_contenido": 7.0, "pct_dolor_plataforma": 4.7, "pct_dolor_modalidad": 41.9, "pct_dolor_equipo": 1.2, "pct_dolor_otros": 2.3, "pct_positivos": 43.8, "pct_neutros": 15.2, "color": "#ef4444"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "TOMA DE DECISIONES Y SIMULACIÓN DE NEGOCIOS", "promedio_cae": 4.567142857142857, "total_comentarios": 214, "comentarios_negativos": 59, "comentarios_positivos": 98, "comentarios_neutros": 57.0, "dolor_docente": 7.0, "dolor_actividades": 10.0, "dolor_contenido": 24.0, "dolor_plataforma": 1.0, "dolor_modalidad": 14.0, "dolor_equipo": 3.0, "dolor_otros": 0, "pct_negativos": 27.57, "pct_dolor_docente": 11.9, "pct_dolor_actividades": 16.9, "pct_dolor_contenido": 40.7, "pct_dolor_plataforma": 1.7, "pct_dolor_modalidad": 23.7, "pct_dolor_equipo": 5.1, "pct_dolor_otros": 0.0, "pct_positivos": 45.8, "pct_neutros": 26.6, "color": "#f59e0b"}];
+
+        let currentFilter = 'Todos';
+        
+        // Obtener departamentos únicos
+        const departamentos = ['Todos', ...new Set(allData.map(d => d.departamento))].sort();
+
+        // Crear botones de filtro
+        const filterContainer = document.getElementById('filterButtons');
+        departamentos.forEach(dept => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn' + (dept === 'Todos' ? ' active' : '');
+            btn.textContent = dept === 'Todos' ? '🌐 Todos' : dept;
+            btn.onclick = () => filterByDepartment(dept);
+            filterContainer.appendChild(btn);
+        });
+
+        function filterByDepartment(dept) {
+            currentFilter = dept;
+            
+            // Actualizar botones activos
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if ((dept === 'Todos' && btn.textContent === '🌐 Todos') || 
+                    btn.textContent === dept) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            updatePlot();
+        }
+
+        function updatePlot() {
+            const filteredData = currentFilter === 'Todos' 
+                ? allData 
+                : allData.filter(d => d.departamento === currentFilter);
+
+            // Preparar datos para el scatter plot
+            const x = filteredData.map(d => d.promedio_cae);
+            const y = filteredData.map(d => d.comentarios_negativos);
+            const sizes = filteredData.map(d => d.total_comentarios);
+            const colors = filteredData.map(d => d.color);
+            
+            // Crear texto del hover
+            const hoverText = filteredData.map(d => {
+                let dolores = [];
+                
+                if (d.pct_dolor_docente > 0) dolores.push(`👨‍🏫 Docente: ${d.pct_dolor_docente}%`);
+                if (d.pct_dolor_actividades > 0) dolores.push(`📝 Actividades: ${d.pct_dolor_actividades}%`);
+                if (d.pct_dolor_contenido > 0) dolores.push(`📚 Contenido: ${d.pct_dolor_contenido}%`);
+                if (d.pct_dolor_plataforma > 0) dolores.push(`💻 Plataforma: ${d.pct_dolor_plataforma}%`);
+                if (d.pct_dolor_modalidad > 0) dolores.push(`🎓 Modalidad: ${d.pct_dolor_modalidad}%`);
+                if (d.pct_dolor_equipo > 0) dolores.push(`👥 Trabajo en Equipo: ${d.pct_dolor_equipo}%`);
+                if (d.pct_dolor_otros > 0) dolores.push(`❓ Otros: ${d.pct_dolor_otros}%`);
+                
+                const doloresText = dolores.length > 0 
+                    ? '<br><br><b>Tipos de Dolor:</b><br>' + dolores.join('<br>')
+                    : '';
+                
+                return `<b>${d.materia}</b><br>` +
+                       `<i>${d.departamento}</i><br><br>` +
+                       `<b>Promedio CAE:</b> ${d.promedio_cae.toFixed(2)}<br>` +
+                       `<b>Total Comentarios:</b> ${d.total_comentarios}<br>` +
+                       `  • Negativos: ${d.comentarios_negativos} (${d.pct_negativos}%)<br>` +
+                       `  • Neutrales: ${d.comentarios_neutros} (${d.pct_neutros}%)<br>` +
+                       `  • Positivos: ${d.comentarios_positivos} (${d.pct_positivos}%)` +
+                       doloresText;
+            });
+
+            const trace = {
+                x: x,
+                y: y,
+                mode: 'markers',
+                type: 'scatter',
+                text: hoverText,
+                hovertemplate: '%{text}<extra></extra>',
+                marker: {
+                    size: sizes,
+                    sizemode: 'diameter',
+                    sizeref: Math.max(...sizes) / 40,
+                    sizemin: 8,
+                    color: colors,
+                    line: {
+                        color: '#fff',
+                        width: 2
+                    },
+                    opacity: 0.85
+                }
+            };
+
+            // Calcular límites para cuadrantes
+            const xRange = [Math.min(...x) - 0.1, Math.max(...x) + 0.1];
+            const yRange = [0, Math.max(...y) + 10];
+            const xMid = (xRange[0] + xRange[1]) / 2;
+            const yMid = yRange[1] / 2;
+
+            const layout = {
+                title: {
+                    text: '<b>Mapa de Salud Digital por Materia</b><br>' +
+                          '<sub>Tamaño = Volumen de Comentarios | Color = % de Negativos</sub>',
+                    font: { size: 20, family: 'Segoe UI' }
+                },
+                xaxis: {
+                    title: '<b>Promedio CAE (Desempeño Académico)</b>',
+                    titlefont: { size: 14 },
+                    range: xRange,
+                    gridcolor: '#e5e7eb',
+                    zeroline: false
+                },
+                yaxis: {
+                    title: '<b>Comentarios Negativos</b>',
+                    titlefont: { size: 14 },
+                    range: yRange,
+                    gridcolor: '#e5e7eb',
+                    zeroline: false
+                },
+                hovermode: 'closest',
+                plot_bgcolor: '#fafafa',
+                paper_bgcolor: 'white',
+                margin: { l: 80, r: 50, t: 100, b: 80 },
+                height: 700,
+                shapes: [
+                    // Línea vertical para cuadrantes
+                    {
+                        type: 'line',
+                        x0: xMid, x1: xMid,
+                        y0: yRange[0], y1: yRange[1],
+                        line: { color: '#9ca3af', width: 1, dash: 'dash' }
+                    },
+                    // Línea horizontal para cuadrantes
+                    {
+                        type: 'line',
+                        x0: xRange[0], x1: xRange[1],
+                        y0: yMid, y1: yMid,
+                        line: { color: '#9ca3af', width: 1, dash: 'dash' }
+                    }
+                ],
+                annotations: [
+                    // Cuadrante superior derecho
+                    {
+                        x: xRange[1] - 0.05,
+                        y: yRange[1] - 5,
+                        text: '🔴 Crisis Silenciosa<br>(Alto CAE + Muchos Negativos)',
+                        showarrow: false,
+                        font: { size: 11, color: '#ef4444' },
+                        bgcolor: '#fee2e2',
+                        borderpad: 5,
+                        bordercolor: '#ef4444',
+                        borderwidth: 1,
+                        xanchor: 'right'
+                    },
+                    // Cuadrante superior izquierdo
+                    {
+                        x: xRange[0] + 0.05,
+                        y: yRange[1] - 5,
+                        text: '⚠️ Alerta Crítica<br>(Bajo CAE + Muchos Negativos)',
+                        showarrow: false,
+                        font: { size: 11, color: '#dc2626' },
+                        bgcolor: '#fef2f2',
+                        borderpad: 5,
+                        bordercolor: '#dc2626',
+                        borderwidth: 1,
+                        xanchor: 'left'
+                    },
+                    // Cuadrante inferior derecho
+                    {
+                        x: xRange[1] - 0.05,
+                        y: yRange[0] + 5,
+                        text: '✅ Zona Óptima<br>(Alto CAE + Pocos Negativos)',
+                        showarrow: false,
+                        font: { size: 11, color: '#10b981' },
+                        bgcolor: '#d1fae5',
+                        borderpad: 5,
+                        bordercolor: '#10b981',
+                        borderwidth: 1,
+                        xanchor: 'right',
+                        yanchor: 'bottom'
+                    }
+                ]
+            };
+
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+                toImageButtonOptions: {
+                    format: 'png',
+                    filename: 'diagnostico_salud_digital',
+                    height: 1080,
+                    width: 1920,
+                    scale: 2
+                }
+            };
+
+            Plotly.newPlot('plot', [trace], layout, config);
+        }
+
+        function exportToPNG() {
+            Plotly.downloadImage('plot', {
+                format: 'png',
+                width: 1920,
+                height: 1080,
+                filename: 'diagnostico_salud_digital'
+            });
+        }
+
+        // Renderizar gráfica inicial
+        updatePlot();
+    </script>
+</body>
+</html>
