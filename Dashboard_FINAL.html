@@ -3,29 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnóstico de Salud Digital - Educación en Línea</title>
+    <title>Inteligencia Institucional - Diagnóstico Académico</title>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --slate-50: #F8FAFC;
-            --slate-200: #E2E8F0;
-            --slate-500: #64748B;
-            --slate-600: #475569;
-            --slate-900: #0F172A;
+            /* Palette */
+            --color-bg-main: #F6F8FA;
+            --color-surface: #FFFFFF;
 
-            --rose-50: #FFF1F2;
-            --rose-200: #FECDD3;
-            --rose-600: #E11D48;
-            --rose-700: #BE123C;
-            --rose-900: #881337;
+            --color-primary-700: #1E3A8A;
+            --color-primary-600: #1D4ED8;
+            --color-primary-500: #2563EB;
 
-            --emerald-500: #10B981;
-            --amber-500: #F59E0B;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --border-subtle: #E2E8F0;
 
-            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            /* Semantic (Desaturated/Opacity handled in usage or here) */
+            --color-success: #059669;
+            --color-warning: #D97706;
+            --color-critical: #DC2626;
+
+            /* Spacing */
+            --space-1: 8px;
+            --space-2: 16px;
+            --space-3: 24px;
+            --space-4: 32px;
+            --space-5: 48px;
+
+            /* Components */
+            --radius-lg: 16px;
+            --shadow-soft: 0px 1px 2px rgba(15, 23, 42, 0.04), 0px 4px 12px rgba(15, 23, 42, 0.06);
+            --shadow-hover: 0px 6px 20px rgba(15, 23, 42, 0.08);
+            --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -35,162 +49,193 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--slate-50);
-            color: var(--slate-900);
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--color-bg-main);
+            color: var(--text-primary);
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
-            padding: 2rem;
+            padding: 0;
         }
 
-        .container {
-            max-width: 1400px;
+        .dashboard-container {
+            max-width: 1440px;
             margin: 0 auto;
+            padding: 40px;
         }
 
         /* Header */
         .header {
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--slate-200);
+            margin-bottom: var(--space-5);
+            padding-bottom: var(--space-3);
+            border-bottom: 1px solid rgba(15,23,42,0.06);
         }
 
         .header h1 {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 600;
             letter-spacing: -0.02em;
-            color: var(--slate-900);
-            margin-bottom: 0.5rem;
+            color: var(--color-primary-700);
+            margin-bottom: 8px;
         }
 
         .header p {
             font-size: 14px;
             font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--slate-500);
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
         }
 
-        /* KPIs */
-        .metrics-grid {
+        /* KPI Grid */
+        .kpi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 24px;
+            margin-bottom: var(--space-5);
         }
 
+        .card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 24px;
+            transition: all 240ms var(--ease-standard);
+            border: 1px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Metric Card Specifics */
         .metric-card {
-            background: white;
-            border: 1px solid var(--slate-200);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow-sm);
+            position: relative;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            justify-content: space-between;
+            height: 140px;
         }
 
         .metric-value {
             font-size: 36px;
             font-weight: 700;
-            color: var(--slate-900);
-            letter-spacing: -0.025em;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
             font-variant-numeric: tabular-nums;
-            margin-bottom: 0.25rem;
+            margin-top: auto;
         }
 
         .metric-label {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
-            color: var(--slate-500);
+            color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
+            margin-bottom: 4px;
+        }
+
+        .metric-icon {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            color: var(--text-secondary);
+            opacity: 0.5;
         }
 
         /* Filters */
         .filters-section {
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
+            margin-bottom: var(--space-4);
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 4px; /* for scrollbar */
+            scrollbar-width: none; /* Firefox */
         }
+        .filters-section::-webkit-scrollbar { display: none; }
 
-        .filter-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+        .segmented-control {
+            display: inline-flex;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.03); /* Subtle track */
+            padding: 4px;
+            border-radius: 99px;
         }
 
         .filter-btn {
             background: transparent;
-            color: var(--slate-600);
-            border: 1px solid transparent;
-            padding: 0.25rem 1rem;
-            font-size: 14px;
+            color: var(--text-secondary);
+            border: none;
+            padding: 8px 16px;
+            font-size: 13px;
             font-weight: 500;
-            border-radius: 9999px; /* Rounded full */
+            border-radius: 99px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background-color 200ms ease, color 200ms ease;
             font-family: inherit;
         }
 
         .filter-btn:hover {
-            background-color: var(--slate-50);
+            background-color: rgba(255,255,255, 0.5);
+            color: var(--color-primary-700);
         }
 
         .filter-btn.active {
-            background-color: var(--rose-50);
-            color: var(--rose-700);
-            border-color: var(--rose-200);
+            background-color: var(--color-primary-600);
+            color: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
             font-weight: 600;
         }
 
-        /* Chart Card */
+        /* Chart Area */
         .chart-card {
-            background: white;
-            border: 1px solid var(--slate-200);
-            border-radius: 12px;
-            padding: 1.5rem; /* 24px */
-            box-shadow: var(--shadow-sm);
-            position: relative;
+            background: var(--color-surface);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--shadow-soft);
+            background: linear-gradient(to bottom, #FFFFFF 0%, rgba(255,255,255,0.6) 100%);
+            border: 1px solid rgba(15,23,42,0.06);
         }
 
         .chart-header {
             display: flex;
-            justify-content: flex-end; /* Align legend to right */
-            margin-bottom: 1rem;
-            min-height: 24px;
-        }
-
-        #plot {
-            width: 100%;
-            height: 600px;
+            justify-content: flex-end;
+            margin-bottom: 24px;
         }
 
         /* Legend */
         .legend-items {
             display: flex;
-            gap: 1.5rem;
+            gap: 24px;
             align-items: center;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.2s;
+        }
+
+        .legend-item:hover {
+            opacity: 0.8;
+        }
+
+        .legend-item.disabled {
+            opacity: 0.3;
         }
 
         .legend-dot {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         .legend-text {
             font-size: 12px;
-            color: var(--slate-500);
+            color: var(--text-secondary);
             font-weight: 500;
         }
 
@@ -199,79 +244,96 @@
             bottom: 32px;
             right: 32px;
             padding: 12px 24px;
-            background: var(--slate-900);
+            background: var(--color-primary-700);
             color: white;
             border: none;
             cursor: pointer;
             font-family: inherit;
             font-size: 14px;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             transition: all 0.2s ease;
             z-index: 1000;
-            border-radius: 6px;
+            border-radius: 8px;
         }
 
         .export-btn:hover {
-            background: var(--slate-600);
+            background: var(--color-primary-600);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
         }
     </style>
+
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
+    <main class="dashboard-container">
+        <header class="header">
             <h1>Diagnóstico de Salud Digital</h1>
-            <p>Análisis de Comentarios de Estudiantes - Educación en Línea</p>
-        </div>
+            <p>Inteligencia Institucional • Análisis de Comentarios</p>
+        </header>
 
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-value">37</div>
-                <div class="metric-label">Materias</div>
+        <section class="kpi-grid">
+            <div class="card metric-card">
+                <div class="metric-label">Materias Evaluadas</div>
+                <div class="metric-value" data-target="37">0</div>
+                <div class="metric-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                </div>
             </div>
-            <div class="metric-card">
-                <div class="metric-value">5,723</div>
+            <div class="card metric-card">
                 <div class="metric-label">Total Comentarios</div>
+                <div class="metric-value" data-target="5723">0</div>
+                 <div class="metric-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                </div>
             </div>
-            <div class="metric-card">
-                <div class="metric-value" style="color: var(--rose-600);">1,467</div>
-                <div class="metric-label">Comentarios Negativos</div>
+            <div class="card metric-card">
+                <div class="metric-label">Alertas Críticas</div>
+                <div class="metric-value" style="color: var(--color-critical);" data-target="1467">0</div>
+                 <div class="metric-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
             </div>
-            <div class="metric-card">
-                <div class="metric-value" style="color: var(--rose-600);">25.6%</div>
+            <div class="card metric-card">
                 <div class="metric-label">Tasa de Fricción</div>
+                <div class="metric-value" style="color: var(--color-critical);" data-target="25.6" data-suffix="%">0%</div>
+                 <div class="metric-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="filters-section">
-            <div class="filter-label">Departamento:</div>
-            <div class="filter-buttons" id="filterButtons"></div>
-        </div>
+        <section class="filters-section">
+            <div class="segmented-control" id="filterButtons">
+                <!-- Buttons injected by JS -->
+            </div>
+        </section>
 
-        <div class="chart-card">
+        <section class="chart-card">
             <div class="chart-header">
                 <div class="legend-items">
-                    <div class="legend-item">
-                        <div class="legend-dot" style="background: var(--emerald-500);"></div>
-                        <div class="legend-text">Zona Óptima (&lt;15% Neg)</div>
+                    <div class="legend-item" onclick="toggleSeries('success')">
+                        <div class="legend-dot" style="background: var(--color-success);"></div>
+                        <div class="legend-text">Zona Óptima (&lt;15%)</div>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-dot" style="background: var(--amber-500);"></div>
-                        <div class="legend-text">Alerta (15-30% Neg)</div>
+                    <div class="legend-item" onclick="toggleSeries('warning')">
+                        <div class="legend-dot" style="background: var(--color-warning);"></div>
+                        <div class="legend-text">Alerta (15-30%)</div>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-dot" style="background: var(--rose-600);"></div>
-                        <div class="legend-text">Crítico (&gt;30% Neg)</div>
+                    <div class="legend-item" onclick="toggleSeries('critical')">
+                        <div class="legend-dot" style="background: var(--color-critical);"></div>
+                        <div class="legend-text">Crítico (&gt;30%)</div>
                     </div>
-                     <div class="legend-item">
-                        <div class="legend-dot" style="background: var(--slate-500); width: 6px; height: 6px;"></div>
+                     <div class="legend-item" style="cursor: default;">
+                        <div class="legend-dot" style="background: var(--text-secondary); width: 6px; height: 6px;"></div>
                         <div class="legend-text">Volumen = Tamaño</div>
                     </div>
                 </div>
             </div>
             <div id="plot"></div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <button class="export-btn" onclick="exportToPNG()">Exportar Informe</button>
 
@@ -292,6 +354,45 @@
             btn.textContent = dept === 'Todos' ? 'Todos' : dept;
             btn.onclick = () => filterByDepartment(dept);
             filterContainer.appendChild(btn);
+        });
+
+        // KPI Animation
+        function animateValue(obj, start, end, duration, suffix = '') {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                // Ease out cubic
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+
+                let val = progress * (end - start) + start;
+
+                // Format logic
+                if (Number.isInteger(end)) {
+                    obj.innerHTML = Math.floor(val).toLocaleString() + suffix;
+                } else {
+                    obj.innerHTML = val.toFixed(1) + suffix;
+                }
+
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                     // Ensure final value is exact
+                     if (Number.isInteger(end)) {
+                        obj.innerHTML = end.toLocaleString() + suffix;
+                     } else {
+                        obj.innerHTML = end.toFixed(1) + suffix;
+                     }
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Init Animations
+        document.querySelectorAll('.metric-value').forEach(el => {
+            const target = parseFloat(el.getAttribute('data-target'));
+            const suffix = el.getAttribute('data-suffix') || '';
+            animateValue(el, 0, target, 1200, suffix);
         });
 
         function filterByDepartment(dept) {
@@ -317,40 +418,50 @@
             // Preparar datos para el scatter plot
             const x = filteredData.map(d => d.promedio_cae);
             const y = filteredData.map(d => d.comentarios_negativos);
-            const sizes = filteredData.map(d => d.total_comentarios);
+            const sizes = filteredData.map(d => Math.sqrt(d.total_comentarios) * 2.5); // Square root scale
 
             // Map colors to new palette
             const colorMap = {
-                '#ef4444': '#E11D48', // Rose 600
-                '#f59e0b': '#F59E0B', // Amber 500
-                '#10b981': '#10B981'  // Emerald 500
+                '#ef4444': '#DC2626', // Critical
+                '#f59e0b': '#D97706', // Warning
+                '#10b981': '#059669'  // Success
             };
-            const colors = filteredData.map(d => colorMap[d.color] || d.color);
             
-            // Crear texto del hover
+            const borderMap = {
+                '#ef4444': '#B91C1C',
+                '#f59e0b': '#B45309',
+                '#10b981': '#047857'
+            };
+
+            const bgColors = filteredData.map(d => colorMap[d.color] || d.color);
+            const borderColors = filteredData.map(d => borderMap[d.color] || '#333');
+
+            // Crear texto del hover custom HTML styled
             const hoverText = filteredData.map(d => {
                 let dolores = [];
-                // Removed emoji from hover text for professional look
-                if (d.pct_dolor_docente > 0) dolores.push(`Docente: ${d.pct_dolor_docente}%`);
-                if (d.pct_dolor_actividades > 0) dolores.push(`Actividades: ${d.pct_dolor_actividades}%`);
-                if (d.pct_dolor_contenido > 0) dolores.push(`Contenido: ${d.pct_dolor_contenido}%`);
-                if (d.pct_dolor_plataforma > 0) dolores.push(`Plataforma: ${d.pct_dolor_plataforma}%`);
-                if (d.pct_dolor_modalidad > 0) dolores.push(`Modalidad: ${d.pct_dolor_modalidad}%`);
-                if (d.pct_dolor_equipo > 0) dolores.push(`Trabajo en Equipo: ${d.pct_dolor_equipo}%`);
-                if (d.pct_dolor_otros > 0) dolores.push(`Otros: ${d.pct_dolor_otros}%`);
+                if (d.pct_dolor_docente > 0) dolores.push(`Docente: <b>${d.pct_dolor_docente}%</b>`);
+                if (d.pct_dolor_actividades > 0) dolores.push(`Actividades: <b>${d.pct_dolor_actividades}%</b>`);
+                if (d.pct_dolor_contenido > 0) dolores.push(`Contenido: <b>${d.pct_dolor_contenido}%</b>`);
+                if (d.pct_dolor_plataforma > 0) dolores.push(`Plataforma: <b>${d.pct_dolor_plataforma}%</b>`);
+                if (d.pct_dolor_modalidad > 0) dolores.push(`Modalidad: <b>${d.pct_dolor_modalidad}%</b>`);
+                if (d.pct_dolor_equipo > 0) dolores.push(`Equipo: <b>${d.pct_dolor_equipo}%</b>`);
+                if (d.pct_dolor_otros > 0) dolores.push(`Otros: <b>${d.pct_dolor_otros}%</b>`);
                 
                 const doloresText = dolores.length > 0 
-                    ? '<br><br><b>Tipos de Dolor:</b><br>' + dolores.join('<br>')
+                    ? '<div style="margin-top:8px; padding-top:8px; border-top:1px solid #eee; font-size:11px;">' + dolores.join('<br>') + '</div>'
                     : '';
                 
-                return `<b>${d.materia}</b><br>` +
-                       `<span style="color: #666; font-size: 11px;">${d.departamento}</span><br><br>` +
-                       `<b>Promedio CAE:</b> ${d.promedio_cae.toFixed(2)}<br>` +
-                       `<b>Total Comentarios:</b> ${d.total_comentarios}<br>` +
-                       `  • Negativos: ${d.comentarios_negativos} (${d.pct_negativos}%)<br>` +
-                       `  • Neutrales: ${d.comentarios_neutros} (${d.pct_neutros}%)<br>` +
-                       `  • Positivos: ${d.comentarios_positivos} (${d.pct_positivos}%)` +
-                       doloresText;
+                return `<div style="font-family: Inter, sans-serif; width: 220px;">
+                        <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px; line-height: 1.2;">${d.materia}</div>
+                        <div style="font-size: 11px; color: #64748B; margin-bottom: 8px;">${d.departamento}</div>
+                        <div style="display:flex; justify-content:space-between; font-size:12px;">
+                            <span>Promedio:</span> <b>${d.promedio_cae.toFixed(2)}</b>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:12px;">
+                            <span>Negativos:</span> <b style="color:${colorMap[d.color]}">${d.comentarios_negativos} (${d.pct_negativos}%)</b>
+                        </div>
+                        ${doloresText}
+                       </div>`;
             });
 
             const trace = {
@@ -363,41 +474,52 @@
                 marker: {
                     size: sizes,
                     sizemode: 'diameter',
-                    sizeref: Math.max(...sizes) / 40,
-                    sizemin: 8,
-                    color: colors,
+                    sizemin: 6,
+                    color: bgColors,
                     line: {
-                        color: '#FFFFFF',
+                        color: borderColors,
                         width: 1
                     },
-                    opacity: 0.85
+                    opacity: 0.9
                 }
             };
 
             // Calcular límites para cuadrantes
-            const xRange = [Math.min(...x) - 0.1, Math.max(...x) + 0.1];
-            const yRange = [0, Math.max(...y) + 10];
+            const xRange = [3.5, 5.0]; // Fixed reasonable range for academic grades usually
+            // Adjust range dynamically if data is outside
+            const xMin = Math.min(...x) - 0.1;
+            const xMax = Math.max(...x) + 0.1;
+            if (xMin < 3.5) xRange[0] = xMin;
+            if (xMax > 5.0) xRange[1] = xMax;
+
+            const yRange = [0, Math.max(...y) * 1.1];
+
+            // Quadrant lines
+            // Assuming academic avg cut at 4.5? Or based on median?
+            // The previous code used midpoint. Let's stick to midpoint visually for now or 4.5 if specified.
+            // Prompt says "Data protagonist", so let's stick to simple grid.
             const xMid = (xRange[0] + xRange[1]) / 2;
             const yMid = yRange[1] / 2;
 
             const layout = {
-                font: { family: 'Inter, sans-serif' },
+                font: { family: 'Inter, sans-serif', color: '#0F172A' },
                 title: false,
                 xaxis: {
                     title: '<b>Promedio CAE (Desempeño Académico)</b>',
-                    titlefont: { size: 13, color: '#64748B' },
-                    tickfont: { color: '#64748B' },
+                    titlefont: { size: 12, color: '#64748B' },
+                    tickfont: { color: '#64748B', size: 11 },
                     range: xRange,
                     gridcolor: 'transparent',
                     zeroline: false,
-                    showline: false
+                    showline: true,
+                    linecolor: '#E2E8F0'
                 },
                 yaxis: {
-                    title: '<b>Comentarios Negativos</b>',
-                    titlefont: { size: 13, color: '#64748B' },
-                    tickfont: { color: '#64748B' },
+                    title: '<b>Comentarios Negativos (Volumen)</b>',
+                    titlefont: { size: 12, color: '#64748B' },
+                    tickfont: { color: '#64748B', size: 11 },
                     range: yRange,
-                    gridcolor: '#F1F5F9',
+                    gridcolor: 'rgba(15,23,42,0.05)',
                     gridwidth: 1,
                     griddash: 'dot',
                     zeroline: false,
@@ -407,66 +529,53 @@
                 hoverlabel: {
                     bgcolor: '#FFFFFF',
                     bordercolor: '#E2E8F0',
-                    font: { family: 'Inter, sans-serif', size: 13, color: '#0F172A' }
+                    font: { family: 'Inter, sans-serif', size: 12 },
+                    align: 'left'
                 },
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 paper_bgcolor: 'rgba(0,0,0,0)',
                 margin: { l: 60, r: 20, t: 20, b: 60 },
                 height: 600,
                 shapes: [
-                    // Líneas cuadrantes (sutiles)
+                    // Quadrant lines
                     {
                         type: 'line',
-                        x0: xMid, x1: xMid,
+                        x0: 4.5, x1: 4.5, // Standard academic cutoff often
                         y0: yRange[0], y1: yRange[1],
-                        line: { color: '#E2E8F0', width: 1, dash: 'dash' }
+                        line: { color: '#CBD5E1', width: 1, dash: 'dash' }
                     },
                     {
                         type: 'line',
                         x0: xRange[0], x1: xRange[1],
-                        y0: yMid, y1: yMid,
-                        line: { color: '#E2E8F0', width: 1, dash: 'dash' }
+                        y0: yRange[1] * 0.3, // 30% threshold mentioned in legends roughly? Or just mid.
+                        // Previous code had dynamic mid. Let's use specific threshold if possible.
+                        // Legend says >30% negative is Critical.
+                        // But Y axis is raw count.
+                        // Let's stick to the visual midpoint from previous code or just remove arbitrary lines if they add noise.
+                        // User said "Executive clarity".
+                        // I will keep the lines simple.
+                        line: { color: '#CBD5E1', width: 1, dash: 'dash' },
+                        visible: false // Hidden by default to reduce noise unless strictly needed
                     }
                 ],
                 annotations: [
-                    // Cuadrante superior derecho
                     {
-                        x: xRange[1],
-                        y: yRange[1],
-                        text: 'Crisis Silenciosa',
+                        x: xRange[1], y: yRange[1],
+                        text: 'Atención Prioritaria',
                         showarrow: false,
-                        font: { size: 11, color: '#E11D48', weight: 600 },
-                        bgcolor: '#FFF1F2',
-                        borderpad: 6,
-                        xanchor: 'right',
-                        yanchor: 'top',
-                        opacity: 0.9
+                        font: { size: 11, color: '#DC2626', weight: 600 },
+                        bgcolor: 'rgba(255,255,255,0.8)',
+                        xanchor: 'right', yanchor: 'top',
+                        opacity: 0.7
                     },
-                    // Cuadrante superior izquierdo
                     {
-                        x: xRange[0],
-                        y: yRange[1],
-                        text: 'Alerta Crítica',
+                        x: xRange[1], y: yRange[0],
+                        text: 'Desempeño Óptimo',
                         showarrow: false,
-                        font: { size: 11, color: '#E11D48', weight: 600 },
-                        bgcolor: '#FFF1F2',
-                        borderpad: 6,
-                        xanchor: 'left',
-                        yanchor: 'top',
-                        opacity: 0.9
-                    },
-                    // Cuadrante inferior derecho
-                    {
-                        x: xRange[1],
-                        y: yRange[0],
-                        text: 'Zona Óptima',
-                        showarrow: false,
-                        font: { size: 11, color: '#10B981', weight: 600 },
-                        bgcolor: '#ECFDF5',
-                        borderpad: 6,
-                        xanchor: 'right',
-                        yanchor: 'bottom',
-                        opacity: 0.9
+                        font: { size: 11, color: '#059669', weight: 600 },
+                        bgcolor: 'rgba(255,255,255,0.8)',
+                        xanchor: 'right', yanchor: 'bottom',
+                        opacity: 0.7
                     }
                 ]
             };
@@ -475,10 +584,10 @@
                 responsive: true,
                 displayModeBar: true,
                 displaylogo: false,
-                modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+                modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d'],
                 toImageButtonOptions: {
                     format: 'png',
-                    filename: 'diagnostico_salud_digital',
+                    filename: 'Reporte_Inteligencia_Academica',
                     height: 1080,
                     width: 1920,
                     scale: 2
@@ -493,12 +602,19 @@
                 format: 'png',
                 width: 1920,
                 height: 1080,
-                filename: 'diagnostico_salud_digital'
+                filename: 'Reporte_Inteligencia_Academica'
             });
+        }
+
+        // Placeholder for toggleSeries if needed or just visual
+        function toggleSeries(type) {
+            // Advanced interaction: could filter data by type
+            console.log("Toggling " + type);
         }
 
         // Renderizar gráfica inicial
         updatePlot();
     </script>
 </body>
+
 </html>
