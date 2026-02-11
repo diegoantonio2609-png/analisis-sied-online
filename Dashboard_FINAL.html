@@ -6,6 +6,19 @@
     <title>Diagnóstico de Salud Digital - Educación en Línea</title>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <style>
+        :root {
+            --ibero-red: #9E1B32;
+            --ibero-gray: #82786F;
+            --ibero-black: #000000;
+            --success-green: #10b981;
+            --warning-yellow: #f59e0b;
+            --background: #FFFFFF;
+            --background-alt: #FAFAFA;
+            --border-light: #E5E7EB;
+            --shadow-sm: 0 2px 8px rgba(158, 27, 50, 0.08);
+            --shadow-md: 0 4px 12px rgba(158, 27, 50, 0.15);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,10 +26,11 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'IBEROAMERICANA', 'Segoe UI', 'Myriad Pro', 'Helvetica Neue', Arial, sans-serif;
+            background: #f3f4f6;
             padding: 20px;
             min-height: 100vh;
+            color: var(--ibero-black);
         }
 
         .container {
@@ -29,120 +43,140 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--ibero-red);
             color: white;
-            padding: 30px 40px;
+            padding: 40px;
             text-align: center;
+            border-bottom: 4px solid #7D1626;
         }
 
         .header h1 {
+            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
             font-size: 2.2em;
             margin-bottom: 10px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .header p {
+            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
             font-size: 1.1em;
             opacity: 0.95;
+            font-weight: 300;
         }
 
         .content {
-            padding: 30px 40px;
+            padding: 40px;
         }
 
         .metrics {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
         }
 
         .metric-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 20px;
-            border-radius: 10px;
+            background: white;
+            padding: 32px 24px;
+            border-radius: 8px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-sm);
+            border-top: 4px solid var(--ibero-red);
+            transition: transform 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .metric-value {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 5px;
+            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--ibero-red);
+            margin-bottom: 8px;
+            line-height: 1;
         }
 
         .metric-label {
-            font-size: 0.9em;
-            color: #666;
+            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
+            font-size: 0.85em;
+            color: var(--ibero-gray);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            font-weight: 600;
         }
 
         .filters {
             margin-bottom: 25px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
+            padding: 24px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
         }
 
         .filter-label {
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #333;
-            font-size: 1.1em;
+            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--ibero-black);
+            font-size: 1.2em;
         }
 
         .filter-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
 
         .filter-btn {
             padding: 10px 20px;
-            border: 2px solid #667eea;
+            border: 2px solid var(--ibero-red);
             background: white;
-            color: #667eea;
-            border-radius: 25px;
+            color: var(--ibero-red);
+            border-radius: 12px;
             cursor: pointer;
+            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
             font-size: 0.95em;
-            transition: all 0.3s ease;
-            font-weight: 500;
+            transition: all 0.2s ease;
+            font-weight: 600;
         }
 
         .filter-btn:hover {
-            background: #f0f3ff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            background: var(--background-alt);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(158, 27, 50, 0.1);
         }
 
         .filter-btn.active {
-            background: #667eea;
+            background: var(--ibero-red);
             color: white;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(158, 27, 50, 0.2);
         }
 
         .export-btn {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            padding: 15px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 32px;
+            background: var(--ibero-red);
             color: white;
             border: none;
             border-radius: 30px;
             cursor: pointer;
+            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
             font-size: 1em;
-            font-weight: 600;
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(158, 27, 50, 0.3);
             transition: all 0.3s ease;
             z-index: 1000;
         }
 
         .export-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            background: #7D1626;
+            box-shadow: 0 8px 25px rgba(158, 27, 50, 0.4);
         }
 
         #plot {
@@ -152,48 +186,51 @@
         }
 
         .legend-box {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
+            background: var(--background-alt);
+            padding: 24px;
+            border-radius: 8px;
             margin-top: 20px;
+            border: 1px solid var(--border-light);
         }
 
         .legend-title {
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
+            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--ibero-red);
             font-size: 1.1em;
         }
 
         .legend-items {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
+            gap: 16px;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .legend-circle {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             flex-shrink: 0;
         }
 
         .legend-text {
+            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
             font-size: 0.95em;
-            color: #555;
+            color: #333;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 Diagnóstico de Salud Digital</h1>
+            <h1>Diagnóstico de Salud Digital</h1>
             <p>Análisis de Comentarios de Estudiantes - Educación en Línea</p>
         </div>
 
@@ -236,11 +273,11 @@
                         <div class="legend-text"><strong>Amarillo:</strong> Entre 15% y 30% de comentarios negativos</div>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-circle" style="background: #ef4444;"></div>
+                        <div class="legend-circle" style="background: #9E1B32;"></div>
                         <div class="legend-text"><strong>Rojo:</strong> Más del 30% de comentarios negativos</div>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-circle" style="background: #667eea; width: 30px; height: 30px;"></div>
+                        <div class="legend-circle" style="background: #82786F; width: 30px; height: 30px;"></div>
                         <div class="legend-text"><strong>Tamaño grande:</strong> Mayor volumen de comentarios</div>
                     </div>
                 </div>
@@ -293,7 +330,7 @@
             const x = filteredData.map(d => d.promedio_cae);
             const y = filteredData.map(d => d.comentarios_negativos);
             const sizes = filteredData.map(d => d.total_comentarios);
-            const colors = filteredData.map(d => d.color);
+            const colors = filteredData.map(d => d.color === '#ef4444' ? '#9E1B32' : d.color);
             
             // Crear texto del hover
             const hoverText = filteredData.map(d => {
@@ -351,25 +388,25 @@
             const layout = {
                 title: {
                     text: '<b>Mapa de Salud Digital por Materia</b><br>' +
-                          '<sub>Tamaño = Volumen de Comentarios | Color = % de Negativos</sub>',
-                    font: { size: 20, family: 'Segoe UI' }
+                          '<span style="font-size: 14px; color: #82786F; font-family: \'Myriad Pro\', \'Segoe UI\'">Tamaño = Volumen de Comentarios | Color = % de Negativos</span>',
+                    font: { size: 22, family: 'IBEROAMERICANA, Segoe UI' }
                 },
                 xaxis: {
                     title: '<b>Promedio CAE (Desempeño Académico)</b>',
-                    titlefont: { size: 14 },
+                    titlefont: { size: 14, family: 'Myriad Pro, Segoe UI' },
                     range: xRange,
-                    gridcolor: '#e5e7eb',
+                    gridcolor: '#E5E7EB',
                     zeroline: false
                 },
                 yaxis: {
                     title: '<b>Comentarios Negativos</b>',
-                    titlefont: { size: 14 },
+                    titlefont: { size: 14, family: 'Myriad Pro, Segoe UI' },
                     range: yRange,
-                    gridcolor: '#e5e7eb',
+                    gridcolor: '#E5E7EB',
                     zeroline: false
                 },
                 hovermode: 'closest',
-                plot_bgcolor: '#fafafa',
+                plot_bgcolor: '#FAFAFA',
                 paper_bgcolor: 'white',
                 margin: { l: 80, r: 50, t: 100, b: 80 },
                 height: 700,
@@ -396,10 +433,10 @@
                         y: yRange[1] - 5,
                         text: '🔴 Crisis Silenciosa<br>(Alto CAE + Muchos Negativos)',
                         showarrow: false,
-                        font: { size: 11, color: '#ef4444' },
-                        bgcolor: '#fee2e2',
-                        borderpad: 5,
-                        bordercolor: '#ef4444',
+                        font: { size: 12, color: '#9E1B32', family: 'Myriad Pro, Segoe UI' },
+                        bgcolor: 'rgba(158, 27, 50, 0.05)',
+                        borderpad: 8,
+                        bordercolor: '#9E1B32',
                         borderwidth: 1,
                         xanchor: 'right'
                     },
@@ -409,10 +446,10 @@
                         y: yRange[1] - 5,
                         text: '⚠️ Alerta Crítica<br>(Bajo CAE + Muchos Negativos)',
                         showarrow: false,
-                        font: { size: 11, color: '#dc2626' },
-                        bgcolor: '#fef2f2',
-                        borderpad: 5,
-                        bordercolor: '#dc2626',
+                        font: { size: 12, color: '#9E1B32', family: 'Myriad Pro, Segoe UI' },
+                        bgcolor: 'rgba(158, 27, 50, 0.08)',
+                        borderpad: 8,
+                        bordercolor: '#9E1B32',
                         borderwidth: 1,
                         xanchor: 'left'
                     },
@@ -422,9 +459,9 @@
                         y: yRange[0] + 5,
                         text: '✅ Zona Óptima<br>(Alto CAE + Pocos Negativos)',
                         showarrow: false,
-                        font: { size: 11, color: '#10b981' },
-                        bgcolor: '#d1fae5',
-                        borderpad: 5,
+                        font: { size: 12, color: '#10b981', family: 'Myriad Pro, Segoe UI' },
+                        bgcolor: 'rgba(16, 185, 129, 0.05)',
+                        borderpad: 8,
                         bordercolor: '#10b981',
                         borderwidth: 1,
                         xanchor: 'right',
