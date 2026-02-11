@@ -3,34 +3,44 @@
 <head>
     <meta charset="utf-8">
     <title>Diagnóstico de Salud Digital - Análisis Manual</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            background-color: #FAFAFA;
+            color: #2C2C2C;
         }
         #dashboard {
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 1800px;
+            background: #FFFFFF;
+            padding: 60px;
+            border-radius: 8px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+            max-width: 1600px;
             margin: 0 auto;
+            border: 1px solid #F0F0F0;
         }
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            text-align: left;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #EEEEEE;
+            padding-bottom: 20px;
         }
         .header h1 {
-            color: #2c3e50;
-            font-size: 32px;
-            margin: 0 0 10px 0;
+            color: #2C2C2C;
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.02em;
         }
         .header p {
-            color: #7f8c8d;
-            font-size: 16px;
+            color: #666;
+            font-size: 15px;
+            font-weight: 400;
             margin: 0;
         }
     </style>
@@ -110,41 +120,49 @@ const medFricc = fricc.slice().sort((a,b)=>a-b)[Math.floor(fricc.length/2)];
 const layout = {
     title: {
         text: '<b>Desempeño Académico vs Fricción Estudiantil</b><br>' +
-              `<sub>37 materias | 5723 comentarios analizados manualmente</sub>`,
-        font: {size: 24, family: 'Arial'},
+              `<span style="font-size: 14px; color: #666; font-weight: 400;">37 materias | 5723 comentarios analizados manualmente</span>`,
+        font: {size: 24, family: 'Inter, sans-serif', color: '#2C2C2C'},
         x: 0.5
     },
+    font: {
+        family: 'Inter, sans-serif',
+        color: '#2C2C2C'
+    },
     xaxis: {
-        title: {text: '<b>Desempeño Académico (Promedio CAE)</b>', font: {size: 16}},
+        title: {text: '<b>Desempeño Académico (Promedio CAE)</b>', font: {size: 14, color: '#2C2C2C'}},
         showgrid: true,
-        gridcolor: 'rgba(230,230,230,0.7)',
+        gridcolor: '#E0E0E0',
+        gridwidth: 1,
         range: [Math.min(...cae) - 0.15, Math.max(...cae) + 0.15],
-        zeroline: false
+        zeroline: false,
+        tickfont: {color: '#666'}
     },
     yaxis: {
-        title: {text: '<b>Índice de Fricción</b>', font: {size: 16}},
+        title: {text: '<b>Índice de Fricción</b>', font: {size: 14, color: '#2C2C2C'}},
         showgrid: true,
-        gridcolor: 'rgba(230,230,230,0.7)',
+        gridcolor: '#E0E0E0',
+        gridwidth: 1,
         range: [Math.min(...fricc) - 10, Math.max(...fricc) + 10],
-        zeroline: false
+        zeroline: false,
+        tickfont: {color: '#666'}
     },
     hovermode: 'closest',
     showlegend: true,
     legend: {
-        title: {text: '<b>Departamento</b>', font: {size: 14}},
+        title: {text: '<b>Departamento</b>', font: {size: 12}},
         yanchor: 'top',
         y: 0.98,
         xanchor: 'left',
         x: 1.02,
-        bgcolor: 'rgba(255,255,255,0.95)',
-        bordercolor: '#ddd',
-        borderwidth: 2,
-        font: {size: 11}
+        bgcolor: 'rgba(255,255,255,0.8)',
+        bordercolor: '#EEEEEE',
+        borderwidth: 1,
+        font: {size: 11, color: '#555'}
     },
     plot_bgcolor: 'white',
     paper_bgcolor: 'white',
     height: 800,
-    margin: {t: 140, r: 320, b: 90, l: 100},
+    margin: {t: 100, r: 320, b: 90, l: 100},
     shapes: [
         // Línea horizontal mediana
         {
@@ -153,8 +171,8 @@ const layout = {
             x1: Math.max(...cae) + 0.15,
             y0: medFricc,
             y1: medFricc,
-            line: {color: '#95a5a6', width: 2, dash: 'dot'},
-            opacity: 0.6
+            line: {color: '#BDBDBD', width: 1, dash: 'dot'},
+            opacity: 0.5
         },
         // Línea vertical mediana
         {
@@ -163,8 +181,8 @@ const layout = {
             x1: medCae,
             y0: Math.min(...fricc) - 10,
             y1: Math.max(...fricc) + 10,
-            line: {color: '#95a5a6', width: 2, dash: 'dot'},
-            opacity: 0.6
+            line: {color: '#BDBDBD', width: 1, dash: 'dot'},
+            opacity: 0.5
         }
     ],
     annotations: [
@@ -172,37 +190,37 @@ const layout = {
         {
             x: Math.max(...cae) * 0.985,
             y: Math.max(...fricc) * 0.92,
-            text: '<b>🔴 CRISIS SILENCIOSA</b><br><sub>Alto CAE + Alta Fricción</sub>',
+            text: '<b>CRISIS SILENCIOSA</b><br><span style="font-size: 11px; font-weight: 400;">Alto CAE + Alta Fricción</span>',
             showarrow: false,
-            font: {size: 13, color: '#c0392b', family: 'Arial'},
-            bgcolor: 'rgba(231,76,60,0.15)',
-            bordercolor: '#c0392b',
-            borderwidth: 2,
-            borderpad: 8
+            font: {size: 12, color: '#C8102E', family: 'Inter, sans-serif'},
+            bgcolor: 'rgba(200, 16, 46, 0.04)',
+            bordercolor: '#C8102E',
+            borderwidth: 1,
+            borderpad: 10
         },
         // Cuadrante Óptimo
         {
             x: Math.max(...cae) * 0.985,
             y: Math.min(...fricc) * 1.8,
-            text: '<b>✅ ZONA ÓPTIMA</b><br><sub>Alto CAE + Baja Fricción</sub>',
+            text: '<b>ZONA ÓPTIMA</b><br><span style="font-size: 11px; font-weight: 400;">Alto CAE + Baja Fricción</span>',
             showarrow: false,
-            font: {size: 13, color: '#27ae60', family: 'Arial'},
-            bgcolor: 'rgba(46,204,113,0.15)',
-            bordercolor: '#27ae60',
-            borderwidth: 2,
-            borderpad: 8
+            font: {size: 12, color: '#2E7D32', family: 'Inter, sans-serif'},
+            bgcolor: 'rgba(46, 125, 50, 0.04)',
+            bordercolor: '#2E7D32',
+            borderwidth: 1,
+            borderpad: 10
         },
         // Cuadrante Alerta Crítica
         {
             x: Math.min(...cae) * 1.02,
             y: Math.max(...fricc) * 0.92,
-            text: '<b>⚠️ ALERTA CRÍTICA</b><br><sub>Bajo CAE + Alta Fricción</sub>',
+            text: '<b>ALERTA CRÍTICA</b><br><span style="font-size: 11px; font-weight: 400;">Bajo CAE + Alta Fricción</span>',
             showarrow: false,
-            font: {size: 13, color: '#d35400', family: 'Arial'},
-            bgcolor: 'rgba(230,126,34,0.15)',
-            bordercolor: '#d35400',
-            borderwidth: 2,
-            borderpad: 8
+            font: {size: 12, color: '#C8102E', family: 'Inter, sans-serif'},
+            bgcolor: 'rgba(200, 16, 46, 0.04)',
+            bordercolor: '#C8102E',
+            borderwidth: 1,
+            borderpad: 10
         }
     ]
 };
