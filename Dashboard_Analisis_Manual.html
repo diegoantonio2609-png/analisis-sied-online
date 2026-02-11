@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Diagnóstico de Salud Digital - Análisis Manual</title>
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        #dashboard {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            font-size: 32px;
+            margin: 0 0 10px 0;
+        }
+        .header p {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="dashboard">
+        <div class="header">
+            <h1>📊 Diagnóstico de Salud Digital</h1>
+            <p>Análisis Manual de Experiencia Estudiantil | Primavera 2024 - Verano 2025</p>
+        </div>
+        <div id="plot"></div>
+    </div>
+    
+    <script>
+const data = ["ADMINISTRACI\u00d3N ESTRAT\u00c9GICA", "BIO\u00c9TICA", "COMUNICACI\u00d3N POL\u00cdTICA Y LEGISLACI\u00d3N DE MEDIOS", "CREACI\u00d3N DE NEGOCIOS", "CR\u00cdTICA DEL ARTE Y CULTURA", "DERECHO DE LOS NEGOCIOS", "DERECHO INTERNACIONAL PRIVADO", "DESAF\u00cdOS \u00c9TICOS DE LA CIENCIA Y LA TECNOLOG\u00cdA", "DISE\u00d1O DE CONTENIDOS DIGITALES", "DISE\u00d1O DE JUEGOS", "DISE\u00d1O DE PROYECTOS DE INTERVENCI\u00d3N", "\u00c9TICA PROFESIONAL DE LA PSICOLOG\u00cdA", "FINANZAS INTERNACIONALES", "FUNDAMENTOS DE URBANISMO", "GESTI\u00d3N DE PROYECTOS", "GESTI\u00d3N DE PROYECTOS DE INGENIER\u00cdA", "HABILIDADES DIRECTIVAS", "IMAGEN Y CULTURA", "LIBERTAD DESDE LA PERSPECTIVA CRISTIANA", "MARKETING DIGITAL", "PERSPECTIVA DE G\u00c9NERO", "PORTAFOLIOS DE INVERSI\u00d3N", "PR\u00c1CTICA PROFESIONAL I DE NUTRICI\u00d3N Y CIENCIA DE LOS ALIMENTOS", "PR\u00c1CTICA PROFESIONAL II DE NUTRICI\u00d3N Y CIENCIA DE LOS ALIMENTOS", "PR\u00c1CTICA VIVENCIAL EN TALLER ARTESANAL", "PROGRAMAS DE ALIMENTACI\u00d3N Y NUTRICI\u00d3N", "PROMOCI\u00d3N DE VENTAS", "RESPONSABILIDAD SOCIAL CORPORATIVA", "SISTEMAS ORGANIZACIONALES", "SOCIEDAD Y CULTURA DE PAZ", "SOCIEDAD Y DESARROLLO", "SOCIOLOG\u00cdA JUR\u00cdDICA", "TALLER DE S\u00cdNTESIS Y EVALUACI\u00d3N DE CIENCIAS ECON\u00d3MICO ADMINISTRATIVAS II", "TALLER DE S\u00cdNTESIS Y EVALUACI\u00d3N DE DISE\u00d1O DE PRODUCTO III", "TEMAS SELECTOS DE CONTADUR\u00cdA Y ESTRATEGIAS FINANCIERAS I", "TEOR\u00cdA E HISTORIA DE LA ARQUITECTURA I", "TOMA DE DECISIONES Y SIMULACI\u00d3N DE NEGOCIOS"];
+const depts = ["2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS", "919 - DEPARTAMENTO DE INGENIER\u00cdAS", "905 - DEPARTAMENTO DE CIENCIAS SOCIALES Y HUMANIDADES", "925 - COORDINACI\u00d3N DE EMPRENDIMIENTO UNIVERSITARIO", "1 - DEPARTAMENTO DE ARQUITECTURA Y DISE\u00d1O", "4 - CIENCIAS JUR\u00cdDICAS", "905 - DEPARTAMENTO DE CIENCIAS SOCIALES Y HUMANIDADES", "912 - CENTRO DE FORMACI\u00d3N HUMANISTA", "1 - DEPARTAMENTO DE ARQUITECTURA Y DISE\u00d1O", "1 - DEPARTAMENTO DE ARQUITECTURA Y DISE\u00d1O", "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS", "1 - DEPARTAMENTO DE ARQUITECTURA Y DISE\u00d1O", "2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS", "919 - DEPARTAMENTO DE INGENIER\u00cdAS", "2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS", "1 - DEPARTAMENTO DE ARQUITECTURA Y DISE\u00d1O", "912 - CENTRO DE FORMACI\u00d3N HUMANISTA", "2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS", "912 - CENTRO DE FORMACI\u00d3N HUMANISTA", "2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS", "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "1 - DEPARTAMENTO DE ARQUITECTURA Y DISE\u00d1O", "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS", "2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS", "2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS", "912 - CENTRO DE FORMACI\u00d3N HUMANISTA", "912 - CENTRO DE FORMACI\u00d3N HUMANISTA", "905 - DEPARTAMENTO DE CIENCIAS SOCIALES Y HUMANIDADES", "2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS", "1 - DEPARTAMENTO DE ARQUITECTURA Y DISE\u00d1O", "2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS", "1 - DEPARTAMENTO DE ARQUITECTURA Y DISE\u00d1O", "2 - DEPARTAMENTO DE CIENCIAS ECON\u00d3MICO-ADMINISTRATIVAS"];
+const cae = [4.72, 4.5, 4.28, 4.58, 4.95, 4.4, 4.2, 4.78, 4.22, 4.6, 4.4, 4.63, 4.4, 4.76, 4.3, 4.64, 4.59, 4.92, 4.76, 4.36, 4.61, 4.31, 5.0, 4.7, 4.99, 4.06, 4.45, 4.55, 4.6, 4.57, 4.78, 4.1, 4.48, 4.88, 4.9, 4.48, 4.57];
+const fricc = [64, 44, 28, 146, 20, 2, 140, 96, 26, 102, 76, 106, 46, 34, 192, 108, 14, 10, 80, 70, 144, 66, 2, 10, 8, 22, 80, 228, 36, 152, 92, 110, 270, 12, 8, 172, 118];
+const total = [242, 58, 32, 346, 56, 4, 180, 298, 40, 124, 82, 144, 124, 68, 318, 190, 18, 20, 318, 88, 280, 86, 10, 31, 38, 30, 164, 466, 90, 302, 274, 130, 564, 38, 46, 210, 214];
+const neg = [32, 22, 14, 73, 10, 1, 70, 48, 13, 51, 38, 53, 23, 17, 96, 54, 7, 5, 40, 35, 72, 33, 1, 5, 4, 11, 40, 114, 18, 76, 46, 55, 135, 6, 4, 86, 59];
+const pos = [145, 28, 9, 177, 35, 3, 68, 173, 17, 45, 31, 49, 75, 41, 138, 97, 6, 12, 200, 27, 144, 35, 9, 21, 33, 9, 84, 223, 51, 146, 162, 42, 297, 29, 29, 92, 98];
+const neu = [65, 8, 9, 96, 11, 0, 42, 77, 10, 28, 13, 42, 26, 10, 84, 39, 5, 3, 78, 26, 64, 18, 0, 5, 1, 10, 40, 129, 21, 80, 66, 33, 132, 3, 13, 32, 57];
+const pct_doc = [19, 23, 7, 42, 0, 0, 24, 27, 8, 16, 16, 9, 26, 6, 30, 39, 14, 0, 30, 17, 17, 36, 0, 20, 25, 36, 40, 25, 6, 26, 24, 24, 36, 67, 50, 14, 12];
+const pct_act = [31, 4, 14, 19, 40, 100, 16, 42, 23, 6, 29, 26, 13, 29, 22, 20, 43, 0, 35, 11, 33, 21, 100, 60, 50, 27, 8, 26, 61, 43, 50, 26, 27, 33, 25, 29, 17];
+const pct_cont = [16, 9, 36, 15, 0, 0, 17, 17, 8, 14, 5, 6, 17, 24, 8, 15, 0, 20, 10, 9, 17, 9, 0, 0, 0, 9, 8, 15, 17, 13, 13, 13, 7, 0, 0, 7, 41];
+const pct_plat = [6, 14, 0, 0, 0, 0, 16, 4, 0, 8, 8, 2, 4, 0, 4, 6, 0, 40, 8, 0, 6, 3, 0, 20, 0, 0, 5, 4, 0, 8, 2, 0, 4, 0, 0, 5, 2];
+const pct_mod = [19, 23, 36, 3, 50, 0, 26, 4, 62, 57, 37, 53, 39, 29, 15, 13, 0, 0, 0, 37, 1, 12, 0, 0, 0, 18, 18, 12, 6, 3, 0, 33, 15, 0, 25, 42, 24];
+const pct_eq = [3, 27, 0, 12, 10, 0, 0, 0, 0, 0, 0, 2, 0, 6, 6, 4, 43, 40, 2, 20, 22, 0, 0, 0, 0, 9, 18, 12, 0, 1, 4, 2, 5, 0, 0, 1, 5];
+const pct_otro = [6, 0, 7, 8, 0, 0, 1, 6, 0, 0, 5, 2, 0, 6, 15, 4, 0, 0, 15, 6, 4, 18, 0, 0, 25, 0, 5, 4, 11, 5, 6, 4, 5, 0, 0, 2, 0];
+
+// Agrupar por departamento
+const deptsUnicos = [...new Set(depts)];
+const colors = ['#FF6B6B','#4ECDC4','#45B7D1','#FFA07A','#98D8C8','#F7DC6F','#BB8FCE','#85C1E2'];
+
+const traces = deptsUnicos.map((dept, idx) => {
+    const indices = depts.map((d,i) => d === dept ? i : null).filter(i => i !== null);
+    
+    return {
+        x: indices.map(i => cae[i]),
+        y: indices.map(i => fricc[i]),
+        mode: 'markers',
+        type: 'scatter',
+        name: dept.length > 40 ? dept.substring(0, 37) + '...' : dept,
+        marker: {
+            size: indices.map(i => Math.max(total[i] * 0.3, 15)),
+            color: colors[idx % colors.length],
+            line: {color: 'white', width: 2},
+            opacity: 0.85
+        },
+        text: indices.map(i => 
+            `<b>${data[i]}</b><br>` +
+            `<i>${depts[i]}</i><br>` +
+            `━━━━━━━━━━━━━━━━<br>` +
+            `<b>📊 Desempeño:</b><br>` +
+            `   Promedio CAE: ${cae[i]}<br>` +
+            `<br><b>💬 Comentarios (${total[i]} total):</b><br>` +
+            `   😞 Negativos: ${neg[i]} (${(neg[i]/total[i]*100).toFixed(1)}%)<br>` +
+            `   😐 Neutrales: ${neu[i]} (${(neu[i]/total[i]*100).toFixed(1)}%)<br>` +
+            `   😊 Positivos: ${pos[i]} (${(pos[i]/total[i]*100).toFixed(1)}%)<br>` +
+            `<br><b>📉 Tipos de Dolor (de los ${neg[i]} negativos):</b><br>` +
+            (pct_doc[i] > 0 ? `   👨‍🏫 Docente: ${pct_doc[i]}%<br>` : '') +
+            (pct_act[i] > 0 ? `   📝 Actividades: ${pct_act[i]}%<br>` : '') +
+            (pct_cont[i] > 0 ? `   📚 Contenido: ${pct_cont[i]}%<br>` : '') +
+            (pct_plat[i] > 0 ? `   💻 Plataforma: ${pct_plat[i]}%<br>` : '') +
+            (pct_mod[i] > 0 ? `   🎓 Modalidad: ${pct_mod[i]}%<br>` : '') +
+            (pct_eq[i] > 0 ? `   👥 Trabajo en Equipo: ${pct_eq[i]}%<br>` : '') +
+            (pct_otro[i] > 0 ? `   ❓ Otros: ${pct_otro[i]}%` : '')
+        ),
+        hovertemplate: '%{text}<extra></extra>'
+    };
+});
+
+// Calcular medianas para líneas de cuadrantes
+const medCae = cae.slice().sort((a,b)=>a-b)[Math.floor(cae.length/2)];
+const medFricc = fricc.slice().sort((a,b)=>a-b)[Math.floor(fricc.length/2)];
+
+const layout = {
+    title: {
+        text: '<b>Desempeño Académico vs Fricción Estudiantil</b><br>' +
+              `<sub>37 materias | 5723 comentarios analizados manualmente</sub>`,
+        font: {size: 24, family: 'Arial'},
+        x: 0.5
+    },
+    xaxis: {
+        title: {text: '<b>Desempeño Académico (Promedio CAE)</b>', font: {size: 16}},
+        showgrid: true,
+        gridcolor: 'rgba(230,230,230,0.7)',
+        range: [Math.min(...cae) - 0.15, Math.max(...cae) + 0.15],
+        zeroline: false
+    },
+    yaxis: {
+        title: {text: '<b>Índice de Fricción</b>', font: {size: 16}},
+        showgrid: true,
+        gridcolor: 'rgba(230,230,230,0.7)',
+        range: [Math.min(...fricc) - 10, Math.max(...fricc) + 10],
+        zeroline: false
+    },
+    hovermode: 'closest',
+    showlegend: true,
+    legend: {
+        title: {text: '<b>Departamento</b>', font: {size: 14}},
+        yanchor: 'top',
+        y: 0.98,
+        xanchor: 'left',
+        x: 1.02,
+        bgcolor: 'rgba(255,255,255,0.95)',
+        bordercolor: '#ddd',
+        borderwidth: 2,
+        font: {size: 11}
+    },
+    plot_bgcolor: 'white',
+    paper_bgcolor: 'white',
+    height: 800,
+    margin: {t: 140, r: 320, b: 90, l: 100},
+    shapes: [
+        // Línea horizontal mediana
+        {
+            type: 'line',
+            x0: Math.min(...cae) - 0.15,
+            x1: Math.max(...cae) + 0.15,
+            y0: medFricc,
+            y1: medFricc,
+            line: {color: '#95a5a6', width: 2, dash: 'dot'},
+            opacity: 0.6
+        },
+        // Línea vertical mediana
+        {
+            type: 'line',
+            x0: medCae,
+            x1: medCae,
+            y0: Math.min(...fricc) - 10,
+            y1: Math.max(...fricc) + 10,
+            line: {color: '#95a5a6', width: 2, dash: 'dot'},
+            opacity: 0.6
+        }
+    ],
+    annotations: [
+        // Cuadrante Crisis Silenciosa
+        {
+            x: Math.max(...cae) * 0.985,
+            y: Math.max(...fricc) * 0.92,
+            text: '<b>🔴 CRISIS SILENCIOSA</b><br><sub>Alto CAE + Alta Fricción</sub>',
+            showarrow: false,
+            font: {size: 13, color: '#c0392b', family: 'Arial'},
+            bgcolor: 'rgba(231,76,60,0.15)',
+            bordercolor: '#c0392b',
+            borderwidth: 2,
+            borderpad: 8
+        },
+        // Cuadrante Óptimo
+        {
+            x: Math.max(...cae) * 0.985,
+            y: Math.min(...fricc) * 1.8,
+            text: '<b>✅ ZONA ÓPTIMA</b><br><sub>Alto CAE + Baja Fricción</sub>',
+            showarrow: false,
+            font: {size: 13, color: '#27ae60', family: 'Arial'},
+            bgcolor: 'rgba(46,204,113,0.15)',
+            bordercolor: '#27ae60',
+            borderwidth: 2,
+            borderpad: 8
+        },
+        // Cuadrante Alerta Crítica
+        {
+            x: Math.min(...cae) * 1.02,
+            y: Math.max(...fricc) * 0.92,
+            text: '<b>⚠️ ALERTA CRÍTICA</b><br><sub>Bajo CAE + Alta Fricción</sub>',
+            showarrow: false,
+            font: {size: 13, color: '#d35400', family: 'Arial'},
+            bgcolor: 'rgba(230,126,34,0.15)',
+            bordercolor: '#d35400',
+            borderwidth: 2,
+            borderpad: 8
+        }
+    ]
+};
+
+const config = {
+    displayModeBar: true,
+    displaylogo: false,
+    modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
+    toImageButtonOptions: {
+        format: 'png',
+        filename: 'diagnostico_salud_digital',
+        height: 1400,
+        width: 2000,
+        scale: 2
+    }
+};
+
+Plotly.newPlot('plot', traces, layout, config);
+    </script>
+</body>
+</html>
