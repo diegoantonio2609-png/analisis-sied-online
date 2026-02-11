@@ -3,43 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inteligencia Institucional - Diagnóstico Académico</title>
+    <title>Diagnóstico de Salud Digital - Educación en Línea</title>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
         :root {
-            /* Palette */
-            --color-bg-main: #F6F8FA;
-            --color-surface: #FFFFFF;
-
-            --color-primary-700: #1E3A8A;
-            --color-primary-600: #1D4ED8;
-            --color-primary-500: #2563EB;
-
-            --text-primary: #0F172A;
-            --text-secondary: #475569;
-            --border-subtle: #E2E8F0;
-
-            /* Semantic (Desaturated/Opacity handled in usage or here) */
-            --color-success: #059669;
-            --color-warning: #D97706;
-            --color-critical: #DC2626;
-
-            /* Spacing */
-            --space-1: 8px;
-            --space-2: 16px;
-            --space-3: 24px;
-            --space-4: 32px;
-            --space-5: 48px;
-
-            /* Components */
-            --radius-lg: 16px;
-            --shadow-soft: 0px 1px 2px rgba(15, 23, 42, 0.04), 0px 4px 12px rgba(15, 23, 42, 0.06);
-            --shadow-hover: 0px 6px 20px rgba(15, 23, 42, 0.08);
-            --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+            --ibero-red: #9E1B32;
+            --ibero-gray: #82786F;
+            --ibero-black: #000000;
+            --success-green: #10b981;
+            --warning-yellow: #f59e0b;
+            --background: #FFFFFF;
+            --background-alt: #FAFAFA;
+            --border-light: #E5E7EB;
+            --shadow-sm: 0 2px 8px rgba(158, 27, 50, 0.08);
+            --shadow-md: 0 4px 12px rgba(158, 27, 50, 0.15);
         }
 
         * {
@@ -49,293 +26,266 @@
         }
 
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background-color: var(--color-bg-main);
-            color: var(--text-primary);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            padding: 0;
+            font-family: 'IBEROAMERICANA', 'Segoe UI', 'Myriad Pro', 'Helvetica Neue', Arial, sans-serif;
+            background: #f3f4f6;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--ibero-black);
         }
 
-        .dashboard-container {
-            max-width: 1440px;
+        .container {
+            max-width: 1900px;
             margin: 0 auto;
-            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
         }
 
-        /* Header */
         .header {
-            margin-bottom: var(--space-5);
-            padding-bottom: var(--space-3);
-            border-bottom: 1px solid rgba(15,23,42,0.06);
+            background: var(--ibero-red);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 4px solid #7D1626;
         }
 
         .header h1 {
-            font-size: 28px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: var(--color-primary-700);
-            margin-bottom: 8px;
+            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
         .header p {
-            font-size: 14px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-secondary);
+            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
+            font-size: 1.1em;
+            opacity: 0.95;
+            font-weight: 300;
         }
 
-        /* KPI Grid */
-        .kpi-grid {
+        .content {
+            padding: 40px;
+        }
+
+        .metrics {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 24px;
-            margin-bottom: var(--space-5);
+            margin-bottom: 40px;
         }
 
-        .card {
-            background: var(--color-surface);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-soft);
-            padding: 24px;
-            transition: all 240ms var(--ease-standard);
-            border: 1px solid transparent;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        /* Metric Card Specifics */
         .metric-card {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 140px;
+            background: white;
+            padding: 32px 24px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border-top: 4px solid var(--ibero-red);
+            transition: transform 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .metric-value {
-            font-size: 36px;
+            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
+            font-size: 3em;
             font-weight: 700;
-            letter-spacing: -0.03em;
-            color: var(--text-primary);
-            font-variant-numeric: tabular-nums;
-            margin-top: auto;
+            color: var(--ibero-red);
+            margin-bottom: 8px;
+            line-height: 1;
         }
 
         .metric-label {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-secondary);
+            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
+            font-size: 0.85em;
+            color: var(--ibero-gray);
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 4px;
-        }
-
-        .metric-icon {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            color: var(--text-secondary);
-            opacity: 0.5;
-        }
-
-        /* Filters */
-        .filters-section {
-            margin-bottom: var(--space-4);
-            overflow-x: auto;
-            white-space: nowrap;
-            padding-bottom: 4px; /* for scrollbar */
-            scrollbar-width: none; /* Firefox */
-        }
-        .filters-section::-webkit-scrollbar { display: none; }
-
-        .segmented-control {
-            display: inline-flex;
-            gap: 8px;
-            background: rgba(15, 23, 42, 0.03); /* Subtle track */
-            padding: 4px;
-            border-radius: 99px;
-        }
-
-        .filter-btn {
-            background: transparent;
-            color: var(--text-secondary);
-            border: none;
-            padding: 8px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            border-radius: 99px;
-            cursor: pointer;
-            transition: background-color 200ms ease, color 200ms ease;
-            font-family: inherit;
-        }
-
-        .filter-btn:hover {
-            background-color: rgba(255,255,255, 0.5);
-            color: var(--color-primary-700);
-        }
-
-        .filter-btn.active {
-            background-color: var(--color-primary-600);
-            color: white;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            letter-spacing: 1.5px;
             font-weight: 600;
         }
 
-        /* Chart Area */
-        .chart-card {
-            background: var(--color-surface);
-            border-radius: 20px;
-            padding: 32px;
-            box-shadow: var(--shadow-soft);
-            background: linear-gradient(to bottom, #FFFFFF 0%, rgba(255,255,255,0.6) 100%);
-            border: 1px solid rgba(15,23,42,0.06);
+        .filters {
+            margin-bottom: 25px;
+            padding: 24px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
         }
 
-        .chart-header {
+        .filter-label {
+            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--ibero-black);
+            font-size: 1.2em;
+        }
+
+        .filter-buttons {
             display: flex;
-            justify-content: flex-end;
-            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        /* Legend */
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--ibero-red);
+            background: white;
+            color: var(--ibero-red);
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
+            font-size: 0.95em;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover {
+            background: var(--background-alt);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(158, 27, 50, 0.1);
+        }
+
+        .filter-btn.active {
+            background: var(--ibero-red);
+            color: white;
+            box-shadow: 0 4px 12px rgba(158, 27, 50, 0.2);
+        }
+
+        .export-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 32px;
+            background: var(--ibero-red);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
+            font-size: 1em;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(158, 27, 50, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-3px);
+            background: #7D1626;
+            box-shadow: 0 8px 25px rgba(158, 27, 50, 0.4);
+        }
+
+        #plot {
+            width: 100%;
+            height: 700px;
+            margin-top: 20px;
+        }
+
+        .legend-box {
+            background: var(--background-alt);
+            padding: 24px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid var(--border-light);
+        }
+
+        .legend-title {
+            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--ibero-red);
+            font-size: 1.1em;
+        }
+
         .legend-items {
-            display: flex;
-            gap: 24px;
-            align-items: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            opacity: 1;
-            transition: opacity 0.2s;
+            gap: 12px;
         }
 
-        .legend-item:hover {
-            opacity: 0.8;
-        }
-
-        .legend-item.disabled {
-            opacity: 0.3;
-        }
-
-        .legend-dot {
-            width: 10px;
-            height: 10px;
+        .legend-circle {
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
 
         .legend-text {
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .export-btn {
-            position: fixed;
-            bottom: 32px;
-            right: 32px;
-            padding: 12px 24px;
-            background: var(--color-primary-700);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: all 0.2s ease;
-            z-index: 1000;
-            border-radius: 8px;
-        }
-
-        .export-btn:hover {
-            background: var(--color-primary-600);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
+            font-size: 0.95em;
+            color: #333;
         }
     </style>
-
 </head>
-
 <body>
-    <main class="dashboard-container">
-        <header class="header">
+    <div class="container">
+        <div class="header">
             <h1>Diagnóstico de Salud Digital</h1>
-            <p>Inteligencia Institucional • Análisis de Comentarios</p>
-        </header>
+            <p>Análisis de Comentarios de Estudiantes - Educación en Línea</p>
+        </div>
 
-        <section class="kpi-grid">
-            <div class="card metric-card">
-                <div class="metric-label">Materias Evaluadas</div>
-                <div class="metric-value" data-target="37">0</div>
-                <div class="metric-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <div class="content">
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="metric-value">37</div>
+                    <div class="metric-label">Materias</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">5,723</div>
+                    <div class="metric-label">Total Comentarios</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">1,467</div>
+                    <div class="metric-label">Comentarios Negativos</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">25.6%</div>
+                    <div class="metric-label">Tasa de Fricción</div>
                 </div>
             </div>
-            <div class="card metric-card">
-                <div class="metric-label">Total Comentarios</div>
-                <div class="metric-value" data-target="5723">0</div>
-                 <div class="metric-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                </div>
-            </div>
-            <div class="card metric-card">
-                <div class="metric-label">Alertas Críticas</div>
-                <div class="metric-value" style="color: var(--color-critical);" data-target="1467">0</div>
-                 <div class="metric-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                </div>
-            </div>
-            <div class="card metric-card">
-                <div class="metric-label">Tasa de Fricción</div>
-                <div class="metric-value" style="color: var(--color-critical);" data-target="25.6" data-suffix="%">0%</div>
-                 <div class="metric-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                </div>
-            </div>
-        </section>
 
-        <section class="filters-section">
-            <div class="segmented-control" id="filterButtons">
-                <!-- Buttons injected by JS -->
+            <div class="filters">
+                <div class="filter-label">📂 Filtrar por Departamento:</div>
+                <div class="filter-buttons" id="filterButtons"></div>
             </div>
-        </section>
 
-        <section class="chart-card">
-            <div class="chart-header">
-                <div class="legend-items">
-                    <div class="legend-item" onclick="toggleSeries('success')">
-                        <div class="legend-dot" style="background: var(--color-success);"></div>
-                        <div class="legend-text">Zona Óptima (&lt;15%)</div>
-                    </div>
-                    <div class="legend-item" onclick="toggleSeries('warning')">
-                        <div class="legend-dot" style="background: var(--color-warning);"></div>
-                        <div class="legend-text">Alerta (15-30%)</div>
-                    </div>
-                    <div class="legend-item" onclick="toggleSeries('critical')">
-                        <div class="legend-dot" style="background: var(--color-critical);"></div>
-                        <div class="legend-text">Crítico (&gt;30%)</div>
-                    </div>
-                     <div class="legend-item" style="cursor: default;">
-                        <div class="legend-dot" style="background: var(--text-secondary); width: 6px; height: 6px;"></div>
-                        <div class="legend-text">Volumen = Tamaño</div>
-                    </div>
-                </div>
-            </div>
             <div id="plot"></div>
-        </section>
-    </main>
 
-    <button class="export-btn" onclick="exportToPNG()">Exportar Informe</button>
+            <div class="legend-box">
+                <div class="legend-title">📖 Leyenda del Dashboard</div>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: #10b981;"></div>
+                        <div class="legend-text"><strong>Verde:</strong> Menos del 15% de comentarios negativos</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: #f59e0b;"></div>
+                        <div class="legend-text"><strong>Amarillo:</strong> Entre 15% y 30% de comentarios negativos</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: #9E1B32;"></div>
+                        <div class="legend-text"><strong>Rojo:</strong> Más del 30% de comentarios negativos</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: #82786F; width: 30px; height: 30px;"></div>
+                        <div class="legend-text"><strong>Tamaño grande:</strong> Mayor volumen de comentarios</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="export-btn" onclick="exportToPNG()">📥 Exportar a PNG</button>
 
     <script>
         // Datos embebidos
@@ -351,48 +301,9 @@
         departamentos.forEach(dept => {
             const btn = document.createElement('button');
             btn.className = 'filter-btn' + (dept === 'Todos' ? ' active' : '');
-            btn.textContent = dept === 'Todos' ? 'Todos' : dept;
+            btn.textContent = dept === 'Todos' ? '🌐 Todos' : dept;
             btn.onclick = () => filterByDepartment(dept);
             filterContainer.appendChild(btn);
-        });
-
-        // KPI Animation
-        function animateValue(obj, start, end, duration, suffix = '') {
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                // Ease out cubic
-                const easeProgress = 1 - Math.pow(1 - progress, 3);
-
-                let val = progress * (end - start) + start;
-
-                // Format logic
-                if (Number.isInteger(end)) {
-                    obj.innerHTML = Math.floor(val).toLocaleString() + suffix;
-                } else {
-                    obj.innerHTML = val.toFixed(1) + suffix;
-                }
-
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                } else {
-                     // Ensure final value is exact
-                     if (Number.isInteger(end)) {
-                        obj.innerHTML = end.toLocaleString() + suffix;
-                     } else {
-                        obj.innerHTML = end.toFixed(1) + suffix;
-                     }
-                }
-            };
-            window.requestAnimationFrame(step);
-        }
-
-        // Init Animations
-        document.querySelectorAll('.metric-value').forEach(el => {
-            const target = parseFloat(el.getAttribute('data-target'));
-            const suffix = el.getAttribute('data-suffix') || '';
-            animateValue(el, 0, target, 1200, suffix);
         });
 
         function filterByDepartment(dept) {
@@ -401,7 +312,7 @@
             // Actualizar botones activos
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
-                if ((dept === 'Todos' && btn.textContent === 'Todos') ||
+                if ((dept === 'Todos' && btn.textContent === '🌐 Todos') || 
                     btn.textContent === dept) {
                     btn.classList.add('active');
                 }
@@ -418,50 +329,33 @@
             // Preparar datos para el scatter plot
             const x = filteredData.map(d => d.promedio_cae);
             const y = filteredData.map(d => d.comentarios_negativos);
-            const sizes = filteredData.map(d => Math.sqrt(d.total_comentarios) * 2.5); // Square root scale
-
-            // Map colors to new palette
-            const colorMap = {
-                '#ef4444': '#DC2626', // Critical
-                '#f59e0b': '#D97706', // Warning
-                '#10b981': '#059669'  // Success
-            };
+            const sizes = filteredData.map(d => d.total_comentarios);
+            const colors = filteredData.map(d => d.color === '#ef4444' ? '#9E1B32' : d.color);
             
-            const borderMap = {
-                '#ef4444': '#B91C1C',
-                '#f59e0b': '#B45309',
-                '#10b981': '#047857'
-            };
-
-            const bgColors = filteredData.map(d => colorMap[d.color] || d.color);
-            const borderColors = filteredData.map(d => borderMap[d.color] || '#333');
-
-            // Crear texto del hover custom HTML styled
+            // Crear texto del hover
             const hoverText = filteredData.map(d => {
                 let dolores = [];
-                if (d.pct_dolor_docente > 0) dolores.push(`Docente: <b>${d.pct_dolor_docente}%</b>`);
-                if (d.pct_dolor_actividades > 0) dolores.push(`Actividades: <b>${d.pct_dolor_actividades}%</b>`);
-                if (d.pct_dolor_contenido > 0) dolores.push(`Contenido: <b>${d.pct_dolor_contenido}%</b>`);
-                if (d.pct_dolor_plataforma > 0) dolores.push(`Plataforma: <b>${d.pct_dolor_plataforma}%</b>`);
-                if (d.pct_dolor_modalidad > 0) dolores.push(`Modalidad: <b>${d.pct_dolor_modalidad}%</b>`);
-                if (d.pct_dolor_equipo > 0) dolores.push(`Equipo: <b>${d.pct_dolor_equipo}%</b>`);
-                if (d.pct_dolor_otros > 0) dolores.push(`Otros: <b>${d.pct_dolor_otros}%</b>`);
+                
+                if (d.pct_dolor_docente > 0) dolores.push(`👨‍🏫 Docente: ${d.pct_dolor_docente}%`);
+                if (d.pct_dolor_actividades > 0) dolores.push(`📝 Actividades: ${d.pct_dolor_actividades}%`);
+                if (d.pct_dolor_contenido > 0) dolores.push(`📚 Contenido: ${d.pct_dolor_contenido}%`);
+                if (d.pct_dolor_plataforma > 0) dolores.push(`💻 Plataforma: ${d.pct_dolor_plataforma}%`);
+                if (d.pct_dolor_modalidad > 0) dolores.push(`🎓 Modalidad: ${d.pct_dolor_modalidad}%`);
+                if (d.pct_dolor_equipo > 0) dolores.push(`👥 Trabajo en Equipo: ${d.pct_dolor_equipo}%`);
+                if (d.pct_dolor_otros > 0) dolores.push(`❓ Otros: ${d.pct_dolor_otros}%`);
                 
                 const doloresText = dolores.length > 0 
-                    ? '<div style="margin-top:8px; padding-top:8px; border-top:1px solid #eee; font-size:11px;">' + dolores.join('<br>') + '</div>'
+                    ? '<br><br><b>Tipos de Dolor:</b><br>' + dolores.join('<br>')
                     : '';
                 
-                return `<div style="font-family: Inter, sans-serif; width: 220px;">
-                        <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px; line-height: 1.2;">${d.materia}</div>
-                        <div style="font-size: 11px; color: #64748B; margin-bottom: 8px;">${d.departamento}</div>
-                        <div style="display:flex; justify-content:space-between; font-size:12px;">
-                            <span>Promedio:</span> <b>${d.promedio_cae.toFixed(2)}</b>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; font-size:12px;">
-                            <span>Negativos:</span> <b style="color:${colorMap[d.color]}">${d.comentarios_negativos} (${d.pct_negativos}%)</b>
-                        </div>
-                        ${doloresText}
-                       </div>`;
+                return `<b>${d.materia}</b><br>` +
+                       `<i>${d.departamento}</i><br><br>` +
+                       `<b>Promedio CAE:</b> ${d.promedio_cae.toFixed(2)}<br>` +
+                       `<b>Total Comentarios:</b> ${d.total_comentarios}<br>` +
+                       `  • Negativos: ${d.comentarios_negativos} (${d.pct_negativos}%)<br>` +
+                       `  • Neutrales: ${d.comentarios_neutros} (${d.pct_neutros}%)<br>` +
+                       `  • Positivos: ${d.comentarios_positivos} (${d.pct_positivos}%)` +
+                       doloresText;
             });
 
             const trace = {
@@ -474,108 +368,104 @@
                 marker: {
                     size: sizes,
                     sizemode: 'diameter',
-                    sizemin: 6,
-                    color: bgColors,
+                    sizeref: Math.max(...sizes) / 40,
+                    sizemin: 8,
+                    color: colors,
                     line: {
-                        color: borderColors,
-                        width: 1
+                        color: '#fff',
+                        width: 2
                     },
-                    opacity: 0.9
+                    opacity: 0.85
                 }
             };
 
             // Calcular límites para cuadrantes
-            const xRange = [3.5, 5.0]; // Fixed reasonable range for academic grades usually
-            // Adjust range dynamically if data is outside
-            const xMin = Math.min(...x) - 0.1;
-            const xMax = Math.max(...x) + 0.1;
-            if (xMin < 3.5) xRange[0] = xMin;
-            if (xMax > 5.0) xRange[1] = xMax;
-
-            const yRange = [0, Math.max(...y) * 1.1];
-
-            // Quadrant lines
-            // Assuming academic avg cut at 4.5? Or based on median?
-            // The previous code used midpoint. Let's stick to midpoint visually for now or 4.5 if specified.
-            // Prompt says "Data protagonist", so let's stick to simple grid.
+            const xRange = [Math.min(...x) - 0.1, Math.max(...x) + 0.1];
+            const yRange = [0, Math.max(...y) + 10];
             const xMid = (xRange[0] + xRange[1]) / 2;
             const yMid = yRange[1] / 2;
 
             const layout = {
-                font: { family: 'Inter, sans-serif', color: '#0F172A' },
-                title: false,
+                title: {
+                    text: '<b>Mapa de Salud Digital por Materia</b><br>' +
+                          '<span style="font-size: 14px; color: #82786F; font-family: \'Myriad Pro\', \'Segoe UI\'">Tamaño = Volumen de Comentarios | Color = % de Negativos</span>',
+                    font: { size: 22, family: 'IBEROAMERICANA, Segoe UI' }
+                },
                 xaxis: {
                     title: '<b>Promedio CAE (Desempeño Académico)</b>',
-                    titlefont: { size: 12, color: '#64748B' },
-                    tickfont: { color: '#64748B', size: 11 },
+                    titlefont: { size: 14, family: 'Myriad Pro, Segoe UI' },
                     range: xRange,
-                    gridcolor: 'transparent',
-                    zeroline: false,
-                    showline: true,
-                    linecolor: '#E2E8F0'
+                    gridcolor: '#E5E7EB',
+                    zeroline: false
                 },
                 yaxis: {
-                    title: '<b>Comentarios Negativos (Volumen)</b>',
-                    titlefont: { size: 12, color: '#64748B' },
-                    tickfont: { color: '#64748B', size: 11 },
+                    title: '<b>Comentarios Negativos</b>',
+                    titlefont: { size: 14, family: 'Myriad Pro, Segoe UI' },
                     range: yRange,
-                    gridcolor: 'rgba(15,23,42,0.05)',
-                    gridwidth: 1,
-                    griddash: 'dot',
-                    zeroline: false,
-                    showline: false
+                    gridcolor: '#E5E7EB',
+                    zeroline: false
                 },
                 hovermode: 'closest',
-                hoverlabel: {
-                    bgcolor: '#FFFFFF',
-                    bordercolor: '#E2E8F0',
-                    font: { family: 'Inter, sans-serif', size: 12 },
-                    align: 'left'
-                },
-                plot_bgcolor: 'rgba(0,0,0,0)',
-                paper_bgcolor: 'rgba(0,0,0,0)',
-                margin: { l: 60, r: 20, t: 20, b: 60 },
-                height: 600,
+                plot_bgcolor: '#FAFAFA',
+                paper_bgcolor: 'white',
+                margin: { l: 80, r: 50, t: 100, b: 80 },
+                height: 700,
                 shapes: [
-                    // Quadrant lines
+                    // Línea vertical para cuadrantes
                     {
                         type: 'line',
-                        x0: 4.5, x1: 4.5, // Standard academic cutoff often
+                        x0: xMid, x1: xMid,
                         y0: yRange[0], y1: yRange[1],
-                        line: { color: '#CBD5E1', width: 1, dash: 'dash' }
+                        line: { color: '#9ca3af', width: 1, dash: 'dash' }
                     },
+                    // Línea horizontal para cuadrantes
                     {
                         type: 'line',
                         x0: xRange[0], x1: xRange[1],
-                        y0: yRange[1] * 0.3, // 30% threshold mentioned in legends roughly? Or just mid.
-                        // Previous code had dynamic mid. Let's use specific threshold if possible.
-                        // Legend says >30% negative is Critical.
-                        // But Y axis is raw count.
-                        // Let's stick to the visual midpoint from previous code or just remove arbitrary lines if they add noise.
-                        // User said "Executive clarity".
-                        // I will keep the lines simple.
-                        line: { color: '#CBD5E1', width: 1, dash: 'dash' },
-                        visible: false // Hidden by default to reduce noise unless strictly needed
+                        y0: yMid, y1: yMid,
+                        line: { color: '#9ca3af', width: 1, dash: 'dash' }
                     }
                 ],
                 annotations: [
+                    // Cuadrante superior derecho
                     {
-                        x: xRange[1], y: yRange[1],
-                        text: 'Atención Prioritaria',
+                        x: xRange[1] - 0.05,
+                        y: yRange[1] - 5,
+                        text: '🔴 Crisis Silenciosa<br>(Alto CAE + Muchos Negativos)',
                         showarrow: false,
-                        font: { size: 11, color: '#DC2626', weight: 600 },
-                        bgcolor: 'rgba(255,255,255,0.8)',
-                        xanchor: 'right', yanchor: 'top',
-                        opacity: 0.7
+                        font: { size: 12, color: '#9E1B32', family: 'Myriad Pro, Segoe UI' },
+                        bgcolor: 'rgba(158, 27, 50, 0.05)',
+                        borderpad: 8,
+                        bordercolor: '#9E1B32',
+                        borderwidth: 1,
+                        xanchor: 'right'
                     },
+                    // Cuadrante superior izquierdo
                     {
-                        x: xRange[1], y: yRange[0],
-                        text: 'Desempeño Óptimo',
+                        x: xRange[0] + 0.05,
+                        y: yRange[1] - 5,
+                        text: '⚠️ Alerta Crítica<br>(Bajo CAE + Muchos Negativos)',
                         showarrow: false,
-                        font: { size: 11, color: '#059669', weight: 600 },
-                        bgcolor: 'rgba(255,255,255,0.8)',
-                        xanchor: 'right', yanchor: 'bottom',
-                        opacity: 0.7
+                        font: { size: 12, color: '#9E1B32', family: 'Myriad Pro, Segoe UI' },
+                        bgcolor: 'rgba(158, 27, 50, 0.08)',
+                        borderpad: 8,
+                        bordercolor: '#9E1B32',
+                        borderwidth: 1,
+                        xanchor: 'left'
+                    },
+                    // Cuadrante inferior derecho
+                    {
+                        x: xRange[1] - 0.05,
+                        y: yRange[0] + 5,
+                        text: '✅ Zona Óptima<br>(Alto CAE + Pocos Negativos)',
+                        showarrow: false,
+                        font: { size: 12, color: '#10b981', family: 'Myriad Pro, Segoe UI' },
+                        bgcolor: 'rgba(16, 185, 129, 0.05)',
+                        borderpad: 8,
+                        bordercolor: '#10b981',
+                        borderwidth: 1,
+                        xanchor: 'right',
+                        yanchor: 'bottom'
                     }
                 ]
             };
@@ -584,10 +474,10 @@
                 responsive: true,
                 displayModeBar: true,
                 displaylogo: false,
-                modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d'],
+                modeBarButtonsToRemove: ['lasso2d', 'select2d'],
                 toImageButtonOptions: {
                     format: 'png',
-                    filename: 'Reporte_Inteligencia_Academica',
+                    filename: 'diagnostico_salud_digital',
                     height: 1080,
                     width: 1920,
                     scale: 2
@@ -602,19 +492,12 @@
                 format: 'png',
                 width: 1920,
                 height: 1080,
-                filename: 'Reporte_Inteligencia_Academica'
+                filename: 'diagnostico_salud_digital'
             });
-        }
-
-        // Placeholder for toggleSeries if needed or just visual
-        function toggleSeries(type) {
-            // Advanced interaction: could filter data by type
-            console.log("Toggling " + type);
         }
 
         // Renderizar gráfica inicial
         updatePlot();
     </script>
 </body>
-
 </html>
