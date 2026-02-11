@@ -5,16 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagnóstico de Salud Digital - Educación en Línea</title>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ibero-red: #9E1B32;
-            --ibero-gray: #82786F;
-            --ibero-black: #000000;
-            --background: #F8F9FA;
-            --surface: #FFFFFF;
-            --border: #E9ECEF;
-            --text-primary: #1A1A1A;
-            --text-secondary: #666666;
+            --slate-50: #F8FAFC;
+            --slate-200: #E2E8F0;
+            --slate-500: #64748B;
+            --slate-600: #475569;
+            --slate-900: #0F172A;
+
+            --rose-50: #FFF1F2;
+            --rose-200: #FECDD3;
+            --rose-600: #E11D48;
+            --rose-700: #BE123C;
+            --rose-900: #881337;
+
+            --emerald-500: #10B981;
+            --amber-500: #F59E0B;
+
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
         }
 
         * {
@@ -24,128 +35,163 @@
         }
 
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background: var(--background);
-            color: var(--text-primary);
-            padding: 40px;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--slate-50);
+            color: var(--slate-900);
             line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            padding: 2rem;
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
+        /* Header */
         .header {
-            background: var(--surface);
-            padding: 40px 48px;
-            border-bottom: 1px solid var(--border);
-            position: relative;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--ibero-red);
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--slate-200);
         }
 
         .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--ibero-black);
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--slate-900);
+            margin-bottom: 0.5rem;
         }
 
         .header p {
-            font-size: 16px;
-            color: var(--ibero-gray);
-            font-weight: 400;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--slate-500);
         }
 
-        .content {
-            padding: 48px;
-        }
-
-        .metrics {
+        /* KPIs */
+        .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-            margin-bottom: 48px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .metric-card {
-            background: var(--surface);
-            padding: 24px;
-            border: 1px solid var(--border);
-            border-left: 4px solid var(--ibero-red);
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
         .metric-value {
-            font-size: 42px;
+            font-size: 36px;
             font-weight: 700;
-            color: var(--ibero-black);
-            margin-bottom: 4px;
-            line-height: 1.1;
-            letter-spacing: -1px;
+            color: var(--slate-900);
+            letter-spacing: -0.025em;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 0.25rem;
         }
 
         .metric-label {
-            font-size: 12px;
-            color: var(--ibero-gray);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--slate-500);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
+            letter-spacing: 0.05em;
         }
 
-        .filters {
-            margin-bottom: 32px;
-        }
-
-        .filter-label {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: var(--ibero-black);
-            display: block;
+        /* Filters */
+        .filters-section {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .filter-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 0.5rem;
         }
 
         .filter-btn {
-            padding: 8px 16px;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text-secondary);
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 13px;
+            background: transparent;
+            color: var(--slate-600);
+            border: 1px solid transparent;
+            padding: 0.25rem 1rem;
+            font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s ease;
+            border-radius: 9999px; /* Rounded full */
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
         }
 
         .filter-btn:hover {
-            border-color: var(--ibero-gray);
-            color: var(--ibero-black);
+            background-color: var(--slate-50);
         }
 
         .filter-btn.active {
-            background: var(--ibero-red);
-            color: white;
-            border-color: var(--ibero-red);
+            background-color: var(--rose-50);
+            color: var(--rose-700);
+            border-color: var(--rose-200);
+            font-weight: 600;
+        }
+
+        /* Chart Card */
+        .chart-card {
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            padding: 1.5rem; /* 24px */
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: flex-end; /* Align legend to right */
+            margin-bottom: 1rem;
+            min-height: 24px;
+        }
+
+        #plot {
+            width: 100%;
+            height: 600px;
+        }
+
+        /* Legend */
+        .legend-items {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .legend-text {
+            font-size: 12px;
+            color: var(--slate-500);
+            font-weight: 500;
         }
 
         .export-btn {
@@ -153,7 +199,7 @@
             bottom: 32px;
             right: 32px;
             padding: 12px 24px;
-            background: var(--ibero-black);
+            background: var(--slate-900);
             color: white;
             border: none;
             cursor: pointer;
@@ -163,58 +209,11 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             transition: all 0.2s ease;
             z-index: 1000;
-            border-radius: 4px;
+            border-radius: 6px;
         }
 
         .export-btn:hover {
-            background: var(--ibero-red);
-        }
-
-        #plot {
-            width: 100%;
-            height: 700px;
-            border: 1px solid var(--border);
-            background: white;
-        }
-
-        .legend-box {
-            background: var(--surface);
-            padding: 24px;
-            border: 1px solid var(--border);
-            margin-top: 24px;
-        }
-
-        .legend-title {
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--ibero-black);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .legend-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 32px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .legend-circle {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .legend-text {
-            font-size: 13px;
-            color: var(--text-secondary);
+            background: var(--slate-600);
         }
     </style>
 </head>
@@ -225,58 +224,56 @@
             <p>Análisis de Comentarios de Estudiantes - Educación en Línea</p>
         </div>
 
-        <div class="content">
-            <div class="metrics">
-                <div class="metric-card">
-                    <div class="metric-value">37</div>
-                    <div class="metric-label">Materias</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">5,723</div>
-                    <div class="metric-label">Total Comentarios</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">1,467</div>
-                    <div class="metric-label">Comentarios Negativos</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">25.6%</div>
-                    <div class="metric-label">Tasa de Fricción</div>
-                </div>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">37</div>
+                <div class="metric-label">Materias</div>
             </div>
-
-            <div class="filters">
-                <div class="filter-label">Filtrar por Departamento:</div>
-                <div class="filter-buttons" id="filterButtons"></div>
+            <div class="metric-card">
+                <div class="metric-value">5,723</div>
+                <div class="metric-label">Total Comentarios</div>
             </div>
+            <div class="metric-card">
+                <div class="metric-value" style="color: var(--rose-600);">1,467</div>
+                <div class="metric-label">Comentarios Negativos</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" style="color: var(--rose-600);">25.6%</div>
+                <div class="metric-label">Tasa de Fricción</div>
+            </div>
+        </div>
 
-            <div id="plot"></div>
+        <div class="filters-section">
+            <div class="filter-label">Departamento:</div>
+            <div class="filter-buttons" id="filterButtons"></div>
+        </div>
 
-            <div class="legend-box">
-                <div class="legend-title">Leyenda del Dashboard</div>
+        <div class="chart-card">
+            <div class="chart-header">
                 <div class="legend-items">
                     <div class="legend-item">
-                        <div class="legend-circle" style="background: #10b981;"></div>
-                        <div class="legend-text"><strong>Verde:</strong> Menos del 15% de comentarios negativos</div>
+                        <div class="legend-dot" style="background: var(--emerald-500);"></div>
+                        <div class="legend-text">Zona Óptima (&lt;15% Neg)</div>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-circle" style="background: #f59e0b;"></div>
-                        <div class="legend-text"><strong>Amarillo:</strong> Entre 15% y 30% de comentarios negativos</div>
+                        <div class="legend-dot" style="background: var(--amber-500);"></div>
+                        <div class="legend-text">Alerta (15-30% Neg)</div>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-circle" style="background: #9E1B32;"></div>
-                        <div class="legend-text"><strong>Rojo:</strong> Más del 30% de comentarios negativos</div>
+                        <div class="legend-dot" style="background: var(--rose-600);"></div>
+                        <div class="legend-text">Crítico (&gt;30% Neg)</div>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-circle" style="background: #82786F; width: 30px; height: 30px;"></div>
-                        <div class="legend-text"><strong>Tamaño grande:</strong> Mayor volumen de comentarios</div>
+                     <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--slate-500); width: 6px; height: 6px;"></div>
+                        <div class="legend-text">Volumen = Tamaño</div>
                     </div>
                 </div>
             </div>
+            <div id="plot"></div>
         </div>
     </div>
 
-    <button class="export-btn" onclick="exportToPNG()">Exportar a PNG</button>
+    <button class="export-btn" onclick="exportToPNG()">Exportar Informe</button>
 
     <script>
         // Datos embebidos
@@ -321,8 +318,14 @@
             const x = filteredData.map(d => d.promedio_cae);
             const y = filteredData.map(d => d.comentarios_negativos);
             const sizes = filteredData.map(d => d.total_comentarios);
-            // Institutional colors: #ef4444 (red) -> #9E1B32 (IBERO Red)
-            const colors = filteredData.map(d => d.color === '#ef4444' ? '#9E1B32' : d.color);
+
+            // Map colors to new palette
+            const colorMap = {
+                '#ef4444': '#E11D48', // Rose 600
+                '#f59e0b': '#F59E0B', // Amber 500
+                '#10b981': '#10B981'  // Emerald 500
+            };
+            const colors = filteredData.map(d => colorMap[d.color] || d.color);
             
             // Crear texto del hover
             const hoverText = filteredData.map(d => {
@@ -364,8 +367,8 @@
                     sizemin: 8,
                     color: colors,
                     line: {
-                        color: '#fff',
-                        width: 1.5
+                        color: '#FFFFFF',
+                        width: 1
                     },
                     opacity: 0.85
                 }
@@ -378,90 +381,89 @@
             const yMid = yRange[1] / 2;
 
             const layout = {
-                font: { family: 'Helvetica Neue, Arial, sans-serif' },
-                title: {
-                    text: '<b>Mapa de Salud Digital por Materia</b><br>' +
-                          '<span style="font-size: 13px; color: #666; font-weight: 400;">Tamaño = Volumen de Comentarios | Color = % de Negativos</span>',
-                    font: { size: 20, color: '#000' }
-                },
+                font: { family: 'Inter, sans-serif' },
+                title: false,
                 xaxis: {
                     title: '<b>Promedio CAE (Desempeño Académico)</b>',
-                    titlefont: { size: 13, color: '#333' },
+                    titlefont: { size: 13, color: '#64748B' },
+                    tickfont: { color: '#64748B' },
                     range: xRange,
-                    gridcolor: '#F0F0F0',
+                    gridcolor: 'transparent',
                     zeroline: false,
-                    showline: true,
-                    linecolor: '#E0E0E0'
+                    showline: false
                 },
                 yaxis: {
                     title: '<b>Comentarios Negativos</b>',
-                    titlefont: { size: 13, color: '#333' },
+                    titlefont: { size: 13, color: '#64748B' },
+                    tickfont: { color: '#64748B' },
                     range: yRange,
-                    gridcolor: '#F0F0F0',
+                    gridcolor: '#F1F5F9',
+                    gridwidth: 1,
+                    griddash: 'dot',
                     zeroline: false,
-                    showline: true,
-                    linecolor: '#E0E0E0'
+                    showline: false
                 },
                 hovermode: 'closest',
                 hoverlabel: {
                     bgcolor: '#FFFFFF',
-                    bordercolor: '#E0E0E0',
-                    font: { family: 'Helvetica Neue, Arial, sans-serif', size: 13, color: '#333' }
+                    bordercolor: '#E2E8F0',
+                    font: { family: 'Inter, sans-serif', size: 13, color: '#0F172A' }
                 },
-                plot_bgcolor: '#FFFFFF',
-                paper_bgcolor: '#FFFFFF',
-                margin: { l: 80, r: 50, t: 80, b: 80 },
-                height: 700,
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                margin: { l: 60, r: 20, t: 20, b: 60 },
+                height: 600,
                 shapes: [
-                    // Línea vertical para cuadrantes
+                    // Líneas cuadrantes (sutiles)
                     {
                         type: 'line',
                         x0: xMid, x1: xMid,
                         y0: yRange[0], y1: yRange[1],
-                        line: { color: '#E0E0E0', width: 1, dash: 'dash' }
+                        line: { color: '#E2E8F0', width: 1, dash: 'dash' }
                     },
-                    // Línea horizontal para cuadrantes
                     {
                         type: 'line',
                         x0: xRange[0], x1: xRange[1],
                         y0: yMid, y1: yMid,
-                        line: { color: '#E0E0E0', width: 1, dash: 'dash' }
+                        line: { color: '#E2E8F0', width: 1, dash: 'dash' }
                     }
                 ],
                 annotations: [
                     // Cuadrante superior derecho
                     {
-                        x: xRange[1] - 0.05,
-                        y: yRange[1] - 5,
-                        text: '<b>Crisis Silenciosa</b><br>(Alto CAE + Muchos Negativos)',
+                        x: xRange[1],
+                        y: yRange[1],
+                        text: 'Crisis Silenciosa',
                         showarrow: false,
-                        font: { size: 12, color: '#9E1B32' },
-                        bgcolor: 'white',
-                        borderpad: 4,
+                        font: { size: 11, color: '#E11D48', weight: 600 },
+                        bgcolor: '#FFF1F2',
+                        borderpad: 6,
                         xanchor: 'right',
+                        yanchor: 'top',
                         opacity: 0.9
                     },
                     // Cuadrante superior izquierdo
                     {
-                        x: xRange[0] + 0.05,
-                        y: yRange[1] - 5,
-                        text: '<b>Alerta Crítica</b><br>(Bajo CAE + Muchos Negativos)',
+                        x: xRange[0],
+                        y: yRange[1],
+                        text: 'Alerta Crítica',
                         showarrow: false,
-                        font: { size: 12, color: '#9E1B32' },
-                        bgcolor: 'white',
-                        borderpad: 4,
+                        font: { size: 11, color: '#E11D48', weight: 600 },
+                        bgcolor: '#FFF1F2',
+                        borderpad: 6,
                         xanchor: 'left',
+                        yanchor: 'top',
                         opacity: 0.9
                     },
                     // Cuadrante inferior derecho
                     {
-                        x: xRange[1] - 0.05,
-                        y: yRange[0] + 5,
-                        text: '<b>Zona Óptima</b><br>(Alto CAE + Pocos Negativos)',
+                        x: xRange[1],
+                        y: yRange[0],
+                        text: 'Zona Óptima',
                         showarrow: false,
-                        font: { size: 12, color: '#10b981' },
-                        bgcolor: 'white',
-                        borderpad: 4,
+                        font: { size: 11, color: '#10B981', weight: 600 },
+                        bgcolor: '#ECFDF5',
+                        borderpad: 6,
                         xanchor: 'right',
                         yanchor: 'bottom',
                         opacity: 0.9
