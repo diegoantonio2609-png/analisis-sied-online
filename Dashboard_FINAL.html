@@ -8,15 +8,15 @@
     <style>
         :root {
             --ibero-red: #9E1B32;
-            --ibero-gray: #82786F;
-            --ibero-black: #000000;
+            --ibero-blue: #004aad;
+            --text-primary: #111827;
+            --text-secondary: #4B5563;
+            --bg-page: #F3F4F6;
+            --bg-card: #FFFFFF;
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             --success-green: #10b981;
             --warning-yellow: #f59e0b;
-            --background: #FFFFFF;
-            --background-alt: #FAFAFA;
-            --border-light: #E5E7EB;
-            --shadow-sm: 0 2px 8px rgba(158, 27, 50, 0.08);
-            --shadow-md: 0 4px 12px rgba(158, 27, 50, 0.15);
         }
 
         * {
@@ -26,41 +26,42 @@
         }
 
         body {
-            font-family: 'IBEROAMERICANA', 'Segoe UI', 'Myriad Pro', 'Helvetica Neue', Arial, sans-serif;
-            background: #f3f4f6;
-            padding: 20px;
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-page);
+            padding: 40px 20px;
             min-height: 100vh;
-            color: var(--ibero-black);
+            color: var(--text-primary);
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 1900px;
+            max-width: 1600px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             overflow: hidden;
         }
 
         .header {
             background: var(--ibero-red);
             color: white;
-            padding: 40px;
+            padding: 48px 32px;
             text-align: center;
-            border-bottom: 4px solid #7D1626;
         }
 
         .header h1 {
-            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
-            font-size: 2.2em;
-            margin-bottom: 10px;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-size: 2.25rem;
+            margin-bottom: 8px;
             font-weight: 700;
+            letter-spacing: -0.025em;
         }
 
         .header p {
-            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
-            font-size: 1.1em;
-            opacity: 0.95;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-size: 1.125rem;
+            opacity: 0.9;
             font-weight: 300;
         }
 
@@ -70,7 +71,7 @@
 
         .metrics {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 24px;
             margin-bottom: 40px;
         }
@@ -78,21 +79,21 @@
         .metric-card {
             background: white;
             padding: 32px 24px;
-            border-radius: 8px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-card);
             border-top: 4px solid var(--ibero-red);
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .metric-card:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-hover);
         }
 
         .metric-value {
-            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
-            font-size: 3em;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-size: 3rem;
             font-weight: 700;
             color: var(--ibero-red);
             margin-bottom: 8px;
@@ -100,28 +101,27 @@
         }
 
         .metric-label {
-            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
-            font-size: 0.85em;
-            color: var(--ibero-gray);
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 0.05em;
             font-weight: 600;
         }
 
         .filters {
-            margin-bottom: 25px;
-            padding: 24px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid var(--border-light);
+            margin-bottom: 32px;
+            padding: 0;
+            background: transparent;
+            border: none;
         }
 
         .filter-label {
-            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
             font-weight: 700;
             margin-bottom: 16px;
-            color: var(--ibero-black);
-            font-size: 1.2em;
+            color: var(--text-primary);
+            font-size: 1.25rem;
         }
 
         .filter-buttons {
@@ -132,27 +132,28 @@
 
         .filter-btn {
             padding: 10px 20px;
-            border: 2px solid var(--ibero-red);
+            border: 1px solid #D1D5DB;
             background: white;
-            color: var(--ibero-red);
-            border-radius: 12px;
+            color: var(--text-secondary);
+            border-radius: 9999px;
             cursor: pointer;
-            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
-            font-size: 0.95em;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-size: 0.875rem;
             transition: all 0.2s ease;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .filter-btn:hover {
-            background: var(--background-alt);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(158, 27, 50, 0.1);
+            background: #EFF6FF;
+            border-color: var(--ibero-blue);
+            color: var(--ibero-blue);
         }
 
         .filter-btn.active {
-            background: var(--ibero-red);
+            background: var(--ibero-blue);
             color: white;
-            box-shadow: 0 4px 12px rgba(158, 27, 50, 0.2);
+            border-color: var(--ibero-blue);
+            box-shadow: 0 4px 6px -1px rgba(0, 74, 173, 0.2);
         }
 
         .export-btn {
@@ -163,42 +164,47 @@
             background: var(--ibero-red);
             color: white;
             border: none;
-            border-radius: 30px;
+            border-radius: 9999px;
             cursor: pointer;
-            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
-            font-size: 1em;
-            font-weight: 700;
-            box-shadow: 0 6px 20px rgba(158, 27, 50, 0.3);
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 10px 15px -3px rgba(158, 27, 50, 0.3);
             transition: all 0.3s ease;
             z-index: 1000;
         }
 
         .export-btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             background: #7D1626;
-            box-shadow: 0 8px 25px rgba(158, 27, 50, 0.4);
+            box-shadow: 0 20px 25px -5px rgba(158, 27, 50, 0.4);
         }
 
         #plot {
             width: 100%;
             height: 700px;
-            margin-top: 20px;
+            margin-top: 24px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            border: 1px solid #E5E7EB;
         }
 
         .legend-box {
-            background: var(--background-alt);
+            background: white;
             padding: 24px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            margin-top: 32px;
+            border: 1px solid #E5E7EB;
+            box-shadow: var(--shadow-card);
         }
 
         .legend-title {
-            font-family: 'IBEROAMERICANA', 'Segoe UI', sans-serif;
-            font-weight: 700;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-weight: 600;
             margin-bottom: 16px;
             color: var(--ibero-red);
-            font-size: 1.1em;
+            font-size: 1.125rem;
         }
 
         .legend-items {
@@ -221,9 +227,9 @@
         }
 
         .legend-text {
-            font-family: 'Myriad Pro', 'Segoe UI', sans-serif;
-            font-size: 0.95em;
-            color: #333;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
         }
     </style>
 </head>
@@ -388,26 +394,30 @@
             const layout = {
                 title: {
                     text: '<b>Mapa de Salud Digital por Materia</b><br>' +
-                          '<span style="font-size: 14px; color: #82786F; font-family: \'Myriad Pro\', \'Segoe UI\'">Tamaño = Volumen de Comentarios | Color = % de Negativos</span>',
-                    font: { size: 22, family: 'IBEROAMERICANA, Segoe UI' }
+                          '<span style="font-size: 14px; color: #6B7280; font-family: \'Segoe UI\', \'Roboto\', sans-serif; font-weight: 400;">Tamaño = Volumen de Comentarios | Color = % de Negativos</span>',
+                    font: { size: 24, family: 'Segoe UI, Roboto, sans-serif', color: '#111827' },
+                    x: 0.02,
+                    xanchor: 'left'
                 },
                 xaxis: {
                     title: '<b>Promedio CAE (Desempeño Académico)</b>',
-                    titlefont: { size: 14, family: 'Myriad Pro, Segoe UI' },
+                    titlefont: { size: 14, family: 'Segoe UI, Roboto, sans-serif', color: '#374151' },
                     range: xRange,
-                    gridcolor: '#E5E7EB',
-                    zeroline: false
+                    gridcolor: '#F3F4F6',
+                    zeroline: false,
+                    tickfont: { family: 'Segoe UI, Roboto, sans-serif', color: '#6B7280' }
                 },
                 yaxis: {
                     title: '<b>Comentarios Negativos</b>',
-                    titlefont: { size: 14, family: 'Myriad Pro, Segoe UI' },
+                    titlefont: { size: 14, family: 'Segoe UI, Roboto, sans-serif', color: '#374151' },
                     range: yRange,
-                    gridcolor: '#E5E7EB',
-                    zeroline: false
+                    gridcolor: '#F3F4F6',
+                    zeroline: false,
+                    tickfont: { family: 'Segoe UI, Roboto, sans-serif', color: '#6B7280' }
                 },
                 hovermode: 'closest',
-                plot_bgcolor: '#FAFAFA',
-                paper_bgcolor: 'white',
+                plot_bgcolor: '#FFFFFF',
+                paper_bgcolor: '#FFFFFF',
                 margin: { l: 80, r: 50, t: 100, b: 80 },
                 height: 700,
                 shapes: [
@@ -416,14 +426,14 @@
                         type: 'line',
                         x0: xMid, x1: xMid,
                         y0: yRange[0], y1: yRange[1],
-                        line: { color: '#9ca3af', width: 1, dash: 'dash' }
+                        line: { color: '#D1D5DB', width: 1, dash: 'dash' }
                     },
                     // Línea horizontal para cuadrantes
                     {
                         type: 'line',
                         x0: xRange[0], x1: xRange[1],
                         y0: yMid, y1: yMid,
-                        line: { color: '#9ca3af', width: 1, dash: 'dash' }
+                        line: { color: '#D1D5DB', width: 1, dash: 'dash' }
                     }
                 ],
                 annotations: [
@@ -431,41 +441,47 @@
                     {
                         x: xRange[1] - 0.05,
                         y: yRange[1] - 5,
-                        text: '🔴 Crisis Silenciosa<br>(Alto CAE + Muchos Negativos)',
+                        text: '🔴 Crisis Silenciosa<br><span style="font-size: 11px; font-weight: 400;">Alto CAE + Muchos Negativos</span>',
                         showarrow: false,
-                        font: { size: 12, color: '#9E1B32', family: 'Myriad Pro, Segoe UI' },
-                        bgcolor: 'rgba(158, 27, 50, 0.05)',
-                        borderpad: 8,
-                        bordercolor: '#9E1B32',
+                        font: { size: 13, color: '#9E1B32', family: 'Segoe UI, Roboto, sans-serif', weight: 600 },
+                        bgcolor: 'rgba(255, 255, 255, 0.95)',
+                        borderpad: 10,
+                        bordercolor: '#FECACA',
                         borderwidth: 1,
-                        xanchor: 'right'
+                        xanchor: 'right',
+                        rx: 5,
+                        ry: 5
                     },
                     // Cuadrante superior izquierdo
                     {
                         x: xRange[0] + 0.05,
                         y: yRange[1] - 5,
-                        text: '⚠️ Alerta Crítica<br>(Bajo CAE + Muchos Negativos)',
+                        text: '⚠️ Alerta Crítica<br><span style="font-size: 11px; font-weight: 400;">Bajo CAE + Muchos Negativos</span>',
                         showarrow: false,
-                        font: { size: 12, color: '#9E1B32', family: 'Myriad Pro, Segoe UI' },
-                        bgcolor: 'rgba(158, 27, 50, 0.08)',
-                        borderpad: 8,
-                        bordercolor: '#9E1B32',
+                        font: { size: 13, color: '#B45309', family: 'Segoe UI, Roboto, sans-serif', weight: 600 },
+                        bgcolor: 'rgba(255, 255, 255, 0.95)',
+                        borderpad: 10,
+                        bordercolor: '#FDE68A',
                         borderwidth: 1,
-                        xanchor: 'left'
+                        xanchor: 'left',
+                        rx: 5,
+                        ry: 5
                     },
                     // Cuadrante inferior derecho
                     {
                         x: xRange[1] - 0.05,
                         y: yRange[0] + 5,
-                        text: '✅ Zona Óptima<br>(Alto CAE + Pocos Negativos)',
+                        text: '✅ Zona Óptima<br><span style="font-size: 11px; font-weight: 400;">Alto CAE + Pocos Negativos</span>',
                         showarrow: false,
-                        font: { size: 12, color: '#10b981', family: 'Myriad Pro, Segoe UI' },
-                        bgcolor: 'rgba(16, 185, 129, 0.05)',
-                        borderpad: 8,
-                        bordercolor: '#10b981',
+                        font: { size: 13, color: '#059669', family: 'Segoe UI, Roboto, sans-serif', weight: 600 },
+                        bgcolor: 'rgba(255, 255, 255, 0.95)',
+                        borderpad: 10,
+                        bordercolor: '#A7F3D0',
                         borderwidth: 1,
                         xanchor: 'right',
-                        yanchor: 'bottom'
+                        yanchor: 'bottom',
+                        rx: 5,
+                        ry: 5
                     }
                 ]
             };
