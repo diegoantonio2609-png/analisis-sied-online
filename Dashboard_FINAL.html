@@ -5,18 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagnóstico de Salud Digital - Educación en Línea</title>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ibero-red: #9E1B32;
-            --ibero-blue: #004aad;
-            --text-primary: #111827;
-            --text-secondary: #4B5563;
-            --bg-page: #F3F4F6;
-            --bg-card: #FFFFFF;
-            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --success-green: #10b981;
-            --warning-yellow: #f59e0b;
+            /* Palette */
+            --lavender-light: #D4D1F5;
+            --lavender-medium: #B4B0E8;
+            --purple-accent: #5B52E8;
+            --purple-hover: #4A42D7;
+            --mint-green: #95D9CC;
+            --mint-dark: #7BCEC1;
+            --charcoal: #2B2D42;
+            --charcoal-deep: #1A1B2E;
+
+            /* Neutrals */
+            --white: #FFFFFF;
+            --off-white: #F0F1F7;
+            --light-gray: #E8E9F3;
+            --text-dark: #1A1B2E;
+            --text-muted: #6B7280;
+            --text-light: #9CA3AF;
+
+            /* Semantics (remapped to palette) */
+            --color-success: var(--mint-green);
+            --color-warning: var(--lavender-medium);
+            --color-critical: var(--purple-accent);
+
+            /* Shadows */
+            --shadow-subtle: 0 2px 12px rgba(0, 0, 0, 0.04);
+            --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --shadow-deep: 0 8px 24px rgba(0, 0, 0, 0.15);
         }
 
         * {
@@ -26,64 +47,73 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-            background: var(--bg-page);
-            padding: 40px 20px;
+            font-family: 'Inter', 'Satoshi', sans-serif;
+            background: linear-gradient(135deg, #F0F1F7 0%, #E8E9F3 100%);
+            padding: 32px;
             min-height: 100vh;
-            color: var(--text-primary);
+            color: var(--text-dark);
             line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1900px;
             margin: 0 auto;
-            background: var(--bg-card);
-            border-radius: 16px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
             overflow: hidden;
+            padding-bottom: 40px;
         }
 
+        /* HEADER */
         .header {
-            background: var(--ibero-red);
-            color: white;
-            padding: 48px 32px;
-            text-align: center;
+            background: linear-gradient(180deg, var(--lavender-light) 0%, var(--lavender-medium) 100%);
+            color: var(--white);
+            padding: 40px 48px;
+            text-align: left;
+            position: relative;
         }
 
         .header h1 {
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            font-size: 2.25rem;
+            font-family: 'Satoshi', 'Inter', sans-serif;
+            font-size: 32px;
             margin-bottom: 8px;
             font-weight: 700;
-            letter-spacing: -0.025em;
+            letter-spacing: -0.01em;
+            color: var(--white);
         }
 
         .header p {
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            font-size: 1.125rem;
-            opacity: 0.9;
-            font-weight: 300;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 400;
+            color: var(--white);
         }
 
         .content {
-            padding: 40px;
+            padding: 32px 48px;
         }
 
+        /* METRICS */
         .metrics {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 24px;
-            margin-bottom: 40px;
+            margin-bottom: 28px;
         }
 
         .metric-card {
-            background: white;
-            padding: 32px 24px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: var(--shadow-card);
-            border-top: 4px solid var(--ibero-red);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: var(--white);
+            padding: 28px;
+            border-radius: 18px;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .metric-card:hover {
@@ -91,146 +121,188 @@
             box-shadow: var(--shadow-hover);
         }
 
+        /* Optional top border for white cards */
+        .metric-card.white-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 28px;
+            right: 28px;
+            height: 3px;
+            background: var(--lavender-medium);
+            border-radius: 0 0 4px 4px;
+            opacity: 0.5;
+        }
+
+        .metric-card.gradient-card {
+            background: linear-gradient(135deg, var(--purple-accent) 0%, #7B6FE8 100%);
+            color: white;
+        }
+
+        .metric-card.gradient-card .metric-value,
+        .metric-card.gradient-card .metric-label {
+            color: white;
+        }
+
+        .metric-card.gradient-card .metric-label {
+            opacity: 0.9;
+        }
+
         .metric-value {
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            font-size: 3rem;
+            font-family: 'Satoshi', 'Inter', sans-serif;
+            font-size: 48px;
             font-weight: 700;
-            color: var(--ibero-red);
-            margin-bottom: 8px;
-            line-height: 1;
+            color: var(--purple-accent);
+            margin-bottom: 4px;
+            line-height: 1.1;
         }
 
         .metric-label {
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
             font-weight: 600;
         }
 
+        /* FILTERS */
         .filters {
-            margin-bottom: 32px;
-            padding: 0;
-            background: transparent;
-            border: none;
+            margin-bottom: 24px;
         }
 
         .filter-label {
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-            font-size: 1.25rem;
+            display: none; /* Hidden based on design ref, implied 'tabs' */
         }
 
         .filter-buttons {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
+            padding-bottom: 4px; /* Space for shadow */
         }
 
         .filter-btn {
-            padding: 10px 20px;
-            border: 1px solid #D1D5DB;
-            background: white;
-            color: var(--text-secondary);
-            border-radius: 9999px;
+            padding: 10px 24px;
+            border: 2px solid var(--light-gray);
+            background: var(--white);
+            color: var(--text-muted);
+            border-radius: 999px;
             cursor: pointer;
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 500;
         }
 
         .filter-btn:hover {
-            background: #EFF6FF;
-            border-color: var(--ibero-blue);
-            color: var(--ibero-blue);
+            background: var(--off-white);
+            transform: translateY(-1px);
         }
 
         .filter-btn.active {
-            background: var(--ibero-blue);
-            color: white;
-            border-color: var(--ibero-blue);
-            box-shadow: 0 4px 6px -1px rgba(0, 74, 173, 0.2);
+            background: var(--purple-accent);
+            color: var(--white);
+            border-color: var(--purple-accent);
+            box-shadow: 0 2px 8px rgba(91, 82, 232, 0.2);
         }
 
-        .export-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            padding: 16px 32px;
-            background: var(--ibero-red);
-            color: white;
-            border: none;
-            border-radius: 9999px;
-            cursor: pointer;
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            box-shadow: 0 10px 15px -3px rgba(158, 27, 50, 0.3);
-            transition: all 0.3s ease;
-            z-index: 1000;
+        .filter-btn.active:hover {
+            transform: translateY(-1px);
+            background: var(--purple-hover);
         }
 
-        .export-btn:hover {
-            transform: translateY(-2px);
-            background: #7D1626;
-            box-shadow: 0 20px 25px -5px rgba(158, 27, 50, 0.4);
+        /* CHART CONTAINER */
+        #plot-container {
+            background: linear-gradient(180deg, #F8F9FE 0%, #FFFFFF 100%);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow-subtle);
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.5);
         }
 
         #plot {
             width: 100%;
             height: 700px;
-            margin-top: 24px;
             border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow-card);
-            border: 1px solid #E5E7EB;
         }
 
+        /* LEGEND */
         .legend-box {
-            background: white;
+            background: var(--white);
             padding: 24px;
-            border-radius: 12px;
-            margin-top: 32px;
-            border: 1px solid #E5E7EB;
-            box-shadow: var(--shadow-card);
+            border-radius: 18px;
+            border: 1px solid var(--light-gray);
+            box-shadow: var(--shadow-subtle);
         }
 
         .legend-title {
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            font-weight: 600;
+            font-family: 'Satoshi', 'Inter', sans-serif;
+            font-weight: 700;
             margin-bottom: 16px;
-            color: var(--ibero-red);
-            font-size: 1.125rem;
+            color: var(--text-dark);
+            font-size: 16px;
         }
 
         .legend-items {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 16px;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .legend-circle {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             flex-shrink: 0;
         }
 
         .legend-text {
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 400;
         }
+
+        /* EXPORT BUTTON */
+        .export-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            padding: 14px 28px;
+            background: var(--purple-accent);
+            color: var(--white);
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            box-shadow: 0 4px 16px rgba(91, 82, 232, 0.25);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            background: var(--purple-hover);
+            box-shadow: 0 6px 20px rgba(91, 82, 232, 0.3);
+        }
+
+        .export-btn:active {
+            transform: scale(0.98);
+        }
+
     </style>
 </head>
 <body>
@@ -242,60 +314,81 @@
 
         <div class="content">
             <div class="metrics">
-                <div class="metric-card">
+                <div class="metric-card white-card">
                     <div class="metric-value">37</div>
                     <div class="metric-label">Materias</div>
                 </div>
-                <div class="metric-card">
+                <div class="metric-card white-card">
                     <div class="metric-value">5,723</div>
                     <div class="metric-label">Total Comentarios</div>
                 </div>
-                <div class="metric-card">
+                <div class="metric-card white-card">
                     <div class="metric-value">1,467</div>
                     <div class="metric-label">Comentarios Negativos</div>
                 </div>
-                <div class="metric-card">
+                <div class="metric-card gradient-card">
                     <div class="metric-value">25.6%</div>
                     <div class="metric-label">Tasa de Fricción</div>
                 </div>
             </div>
 
             <div class="filters">
-                <div class="filter-label">📂 Filtrar por Departamento:</div>
                 <div class="filter-buttons" id="filterButtons"></div>
             </div>
 
-            <div id="plot"></div>
+            <div id="plot-container">
+                <div id="plot"></div>
+            </div>
 
             <div class="legend-box">
                 <div class="legend-title">📖 Leyenda del Dashboard</div>
                 <div class="legend-items">
                     <div class="legend-item">
-                        <div class="legend-circle" style="background: #10b981;"></div>
-                        <div class="legend-text"><strong>Verde:</strong> Menos del 15% de comentarios negativos</div>
+                        <div class="legend-circle" style="background: var(--mint-green);"></div>
+                        <div class="legend-text"><strong>Verde:</strong> &lt;15% negativos</div>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-circle" style="background: #f59e0b;"></div>
-                        <div class="legend-text"><strong>Amarillo:</strong> Entre 15% y 30% de comentarios negativos</div>
+                        <div class="legend-circle" style="background: var(--lavender-medium);"></div>
+                        <div class="legend-text"><strong>Lavanda:</strong> 15-30% negativos</div>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-circle" style="background: #9E1B32;"></div>
-                        <div class="legend-text"><strong>Rojo:</strong> Más del 30% de comentarios negativos</div>
+                        <div class="legend-circle" style="background: var(--purple-accent);"></div>
+                        <div class="legend-text"><strong>Morado:</strong> &gt;30% negativos</div>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-circle" style="background: #82786F; width: 30px; height: 30px;"></div>
-                        <div class="legend-text"><strong>Tamaño grande:</strong> Mayor volumen de comentarios</div>
+                        <div class="legend-circle" style="background: #82786F; width: 24px; height: 24px;"></div>
+                        <div class="legend-text"><strong>Tamaño:</strong> Volumen de comentarios</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <button class="export-btn" onclick="exportToPNG()">📥 Exportar a PNG</button>
+    <button class="export-btn" onclick="exportToPNG()">
+        <span>📥</span> Exportar PNG
+    </button>
 
     <script>
         // Datos embebidos
         const allData = [{"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "ADMINISTRACIÓN ESTRATÉGICA", "promedio_cae": 4.723333333333334, "total_comentarios": 242, "comentarios_negativos": 32, "comentarios_positivos": 145, "comentarios_neutros": 65.0, "dolor_docente": 6.0, "dolor_actividades": 10.0, "dolor_contenido": 5.0, "dolor_plataforma": 2.0, "dolor_modalidad": 6.0, "dolor_equipo": 1.0, "dolor_otros": 2.0, "pct_negativos": 13.22, "pct_dolor_docente": 18.8, "pct_dolor_actividades": 31.2, "pct_dolor_contenido": 15.6, "pct_dolor_plataforma": 6.2, "pct_dolor_modalidad": 18.8, "pct_dolor_equipo": 3.1, "pct_dolor_otros": 6.2, "pct_positivos": 59.9, "pct_neutros": 26.9, "color": "#10b981"}, {"departamento": "919 - DEPARTAMENTO DE INGENIERÍAS", "materia": "BIOÉTICA", "promedio_cae": 4.505, "total_comentarios": 58, "comentarios_negativos": 22, "comentarios_positivos": 28, "comentarios_neutros": 8.0, "dolor_docente": 5.0, "dolor_actividades": 1.0, "dolor_contenido": 2.0, "dolor_plataforma": 3.0, "dolor_modalidad": 5.0, "dolor_equipo": 6.0, "dolor_otros": 0, "pct_negativos": 37.93, "pct_dolor_docente": 22.7, "pct_dolor_actividades": 4.5, "pct_dolor_contenido": 9.1, "pct_dolor_plataforma": 13.6, "pct_dolor_modalidad": 22.7, "pct_dolor_equipo": 27.3, "pct_dolor_otros": 0.0, "pct_positivos": 48.3, "pct_neutros": 13.8, "color": "#ef4444"}, {"departamento": "905 - DEPARTAMENTO DE CIENCIAS SOCIALES Y HUMANIDADES", "materia": "COMUNICACIÓN POLÍTICA Y LEGISLACIÓN DE MEDIOS", "promedio_cae": 4.285, "total_comentarios": 32, "comentarios_negativos": 14, "comentarios_positivos": 9, "comentarios_neutros": 9.0, "dolor_docente": 1.0, "dolor_actividades": 2.0, "dolor_contenido": 5.0, "dolor_plataforma": 0, "dolor_modalidad": 5.0, "dolor_equipo": 0, "dolor_otros": 1.0, "pct_negativos": 43.75, "pct_dolor_docente": 7.1, "pct_dolor_actividades": 14.3, "pct_dolor_contenido": 35.7, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 35.7, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 7.1, "pct_positivos": 28.1, "pct_neutros": 28.1, "color": "#ef4444"}, {"departamento": "925 - COORDINACIÓN DE EMPRENDIMIENTO UNIVERSITARIO", "materia": "CREACIÓN DE NEGOCIOS", "promedio_cae": 4.580666666666667, "total_comentarios": 346, "comentarios_negativos": 73, "comentarios_positivos": 177, "comentarios_neutros": 96.0, "dolor_docente": 31.0, "dolor_actividades": 14.0, "dolor_contenido": 11.0, "dolor_plataforma": 0, "dolor_modalidad": 2.0, "dolor_equipo": 9.0, "dolor_otros": 6.0, "pct_negativos": 21.1, "pct_dolor_docente": 42.5, "pct_dolor_actividades": 19.2, "pct_dolor_contenido": 15.1, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 2.7, "pct_dolor_equipo": 12.3, "pct_dolor_otros": 8.2, "pct_positivos": 51.2, "pct_neutros": 27.7, "color": "#f59e0b"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "CRÍTICA DEL ARTE Y CULTURA", "promedio_cae": 4.95, "total_comentarios": 56, "comentarios_negativos": 10, "comentarios_positivos": 35, "comentarios_neutros": 11.0, "dolor_docente": 0, "dolor_actividades": 4.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 5.0, "dolor_equipo": 1.0, "dolor_otros": 0, "pct_negativos": 17.86, "pct_dolor_docente": 0.0, "pct_dolor_actividades": 40.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 50.0, "pct_dolor_equipo": 10.0, "pct_dolor_otros": 0.0, "pct_positivos": 62.5, "pct_neutros": 19.6, "color": "#f59e0b"}, {"departamento": "4 - CIENCIAS JURÍDICAS", "materia": "DERECHO DE LOS NEGOCIOS", "promedio_cae": 4.4, "total_comentarios": 4, "comentarios_negativos": 1, "comentarios_positivos": 3, "comentarios_neutros": 0, "dolor_docente": 0, "dolor_actividades": 1.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 25.0, "pct_dolor_docente": 0.0, "pct_dolor_actividades": 100.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 75.0, "pct_neutros": 0, "color": "#f59e0b"}, {"departamento": "905 - DEPARTAMENTO DE CIENCIAS SOCIALES Y HUMANIDADES", "materia": "DERECHO INTERNACIONAL PRIVADO", "promedio_cae": 4.2, "total_comentarios": 180, "comentarios_negativos": 70, "comentarios_positivos": 68, "comentarios_neutros": 42.0, "dolor_docente": 17.0, "dolor_actividades": 11.0, "dolor_contenido": 12.0, "dolor_plataforma": 11.0, "dolor_modalidad": 18.0, "dolor_equipo": 0, "dolor_otros": 1.0, "pct_negativos": 38.89, "pct_dolor_docente": 24.3, "pct_dolor_actividades": 15.7, "pct_dolor_contenido": 17.1, "pct_dolor_plataforma": 15.7, "pct_dolor_modalidad": 25.7, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 1.4, "pct_positivos": 37.8, "pct_neutros": 23.3, "color": "#ef4444"}, {"departamento": "912 - CENTRO DE FORMACIÓN HUMANISTA", "materia": "DESAFÍOS ÉTICOS DE LA CIENCIA Y LA TECNOLOGÍA", "promedio_cae": 4.776250000000001, "total_comentarios": 298, "comentarios_negativos": 48, "comentarios_positivos": 173, "comentarios_neutros": 77.0, "dolor_docente": 13.0, "dolor_actividades": 20.0, "dolor_contenido": 8.0, "dolor_plataforma": 2.0, "dolor_modalidad": 2.0, "dolor_equipo": 0, "dolor_otros": 3.0, "pct_negativos": 16.11, "pct_dolor_docente": 27.1, "pct_dolor_actividades": 41.7, "pct_dolor_contenido": 16.7, "pct_dolor_plataforma": 4.2, "pct_dolor_modalidad": 4.2, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 6.2, "pct_positivos": 58.1, "pct_neutros": 25.8, "color": "#f59e0b"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "DISEÑO DE CONTENIDOS DIGITALES", "promedio_cae": 4.215, "total_comentarios": 40, "comentarios_negativos": 13, "comentarios_positivos": 17, "comentarios_neutros": 10.0, "dolor_docente": 1.0, "dolor_actividades": 3.0, "dolor_contenido": 1.0, "dolor_plataforma": 0, "dolor_modalidad": 8.0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 32.5, "pct_dolor_docente": 7.7, "pct_dolor_actividades": 23.1, "pct_dolor_contenido": 7.7, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 61.5, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 42.5, "pct_neutros": 25.0, "color": "#ef4444"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "DISEÑO DE JUEGOS", "promedio_cae": 4.6, "total_comentarios": 124, "comentarios_negativos": 51, "comentarios_positivos": 45, "comentarios_neutros": 28.0, "dolor_docente": 8.0, "dolor_actividades": 3.0, "dolor_contenido": 7.0, "dolor_plataforma": 4.0, "dolor_modalidad": 29.0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 41.13, "pct_dolor_docente": 15.7, "pct_dolor_actividades": 5.9, "pct_dolor_contenido": 13.7, "pct_dolor_plataforma": 7.8, "pct_dolor_modalidad": 56.9, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 36.3, "pct_neutros": 22.6, "color": "#ef4444"}, {"departamento": "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "materia": "DISEÑO DE PROYECTOS DE INTERVENCIÓN", "promedio_cae": 4.3999999999999995, "total_comentarios": 82, "comentarios_negativos": 38, "comentarios_positivos": 31, "comentarios_neutros": 13.0, "dolor_docente": 6.0, "dolor_actividades": 11.0, "dolor_contenido": 2.0, "dolor_plataforma": 3.0, "dolor_modalidad": 14.0, "dolor_equipo": 0, "dolor_otros": 2.0, "pct_negativos": 46.34, "pct_dolor_docente": 15.8, "pct_dolor_actividades": 28.9, "pct_dolor_contenido": 5.3, "pct_dolor_plataforma": 7.9, "pct_dolor_modalidad": 36.8, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 5.3, "pct_positivos": 37.8, "pct_neutros": 15.9, "color": "#ef4444"}, {"departamento": "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "materia": "ÉTICA PROFESIONAL DE LA PSICOLOGÍA", "promedio_cae": 4.63, "total_comentarios": 144, "comentarios_negativos": 53, "comentarios_positivos": 49, "comentarios_neutros": 42.0, "dolor_docente": 5.0, "dolor_actividades": 14.0, "dolor_contenido": 3.0, "dolor_plataforma": 1.0, "dolor_modalidad": 28.0, "dolor_equipo": 1.0, "dolor_otros": 1.0, "pct_negativos": 36.81, "pct_dolor_docente": 9.4, "pct_dolor_actividades": 26.4, "pct_dolor_contenido": 5.7, "pct_dolor_plataforma": 1.9, "pct_dolor_modalidad": 52.8, "pct_dolor_equipo": 1.9, "pct_dolor_otros": 1.9, "pct_positivos": 34.0, "pct_neutros": 29.2, "color": "#ef4444"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "FINANZAS INTERNACIONALES", "promedio_cae": 4.404999999999999, "total_comentarios": 124, "comentarios_negativos": 23, "comentarios_positivos": 75, "comentarios_neutros": 26.0, "dolor_docente": 6.0, "dolor_actividades": 3.0, "dolor_contenido": 4.0, "dolor_plataforma": 1.0, "dolor_modalidad": 9.0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 18.55, "pct_dolor_docente": 26.1, "pct_dolor_actividades": 13.0, "pct_dolor_contenido": 17.4, "pct_dolor_plataforma": 4.3, "pct_dolor_modalidad": 39.1, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 60.5, "pct_neutros": 21.0, "color": "#f59e0b"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "FUNDAMENTOS DE URBANISMO", "promedio_cae": 4.755, "total_comentarios": 68, "comentarios_negativos": 17, "comentarios_positivos": 41, "comentarios_neutros": 10.0, "dolor_docente": 1.0, "dolor_actividades": 5.0, "dolor_contenido": 4.0, "dolor_plataforma": 0, "dolor_modalidad": 5.0, "dolor_equipo": 1.0, "dolor_otros": 1.0, "pct_negativos": 25.0, "pct_dolor_docente": 5.9, "pct_dolor_actividades": 29.4, "pct_dolor_contenido": 23.5, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 29.4, "pct_dolor_equipo": 5.9, "pct_dolor_otros": 5.9, "pct_positivos": 60.3, "pct_neutros": 14.7, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "GESTIÓN DE PROYECTOS", "promedio_cae": 4.301, "total_comentarios": 318, "comentarios_negativos": 96, "comentarios_positivos": 138, "comentarios_neutros": 84.0, "dolor_docente": 29.0, "dolor_actividades": 21.0, "dolor_contenido": 8.0, "dolor_plataforma": 4.0, "dolor_modalidad": 14.0, "dolor_equipo": 6.0, "dolor_otros": 14.0, "pct_negativos": 30.19, "pct_dolor_docente": 30.2, "pct_dolor_actividades": 21.9, "pct_dolor_contenido": 8.3, "pct_dolor_plataforma": 4.2, "pct_dolor_modalidad": 14.6, "pct_dolor_equipo": 6.2, "pct_dolor_otros": 14.6, "pct_positivos": 43.4, "pct_neutros": 26.4, "color": "#ef4444"}, {"departamento": "919 - DEPARTAMENTO DE INGENIERÍAS", "materia": "GESTIÓN DE PROYECTOS DE INGENIERÍA", "promedio_cae": 4.644444444444445, "total_comentarios": 190, "comentarios_negativos": 54, "comentarios_positivos": 97, "comentarios_neutros": 39.0, "dolor_docente": 21.0, "dolor_actividades": 11.0, "dolor_contenido": 8.0, "dolor_plataforma": 3.0, "dolor_modalidad": 7.0, "dolor_equipo": 2.0, "dolor_otros": 2.0, "pct_negativos": 28.42, "pct_dolor_docente": 38.9, "pct_dolor_actividades": 20.4, "pct_dolor_contenido": 14.8, "pct_dolor_plataforma": 5.6, "pct_dolor_modalidad": 13.0, "pct_dolor_equipo": 3.7, "pct_dolor_otros": 3.7, "pct_positivos": 51.1, "pct_neutros": 20.5, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "HABILIDADES DIRECTIVAS", "promedio_cae": 4.59, "total_comentarios": 18, "comentarios_negativos": 7, "comentarios_positivos": 6, "comentarios_neutros": 5.0, "dolor_docente": 1.0, "dolor_actividades": 3.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 0, "dolor_equipo": 3.0, "dolor_otros": 0, "pct_negativos": 38.89, "pct_dolor_docente": 14.3, "pct_dolor_actividades": 42.9, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 42.9, "pct_dolor_otros": 0.0, "pct_positivos": 33.3, "pct_neutros": 27.8, "color": "#ef4444"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "IMAGEN Y CULTURA", "promedio_cae": 4.92, "total_comentarios": 20, "comentarios_negativos": 5, "comentarios_positivos": 12, "comentarios_neutros": 3.0, "dolor_docente": 0, "dolor_actividades": 0, "dolor_contenido": 1.0, "dolor_plataforma": 2.0, "dolor_modalidad": 0, "dolor_equipo": 2.0, "dolor_otros": 0, "pct_negativos": 25.0, "pct_dolor_docente": 0.0, "pct_dolor_actividades": 0.0, "pct_dolor_contenido": 20.0, "pct_dolor_plataforma": 40.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 40.0, "pct_dolor_otros": 0.0, "pct_positivos": 60.0, "pct_neutros": 15.0, "color": "#f59e0b"}, {"departamento": "912 - CENTRO DE FORMACIÓN HUMANISTA", "materia": "LIBERTAD DESDE LA PERSPECTIVA CRISTIANA", "promedio_cae": 4.75875, "total_comentarios": 318, "comentarios_negativos": 40, "comentarios_positivos": 200, "comentarios_neutros": 78.0, "dolor_docente": 12.0, "dolor_actividades": 14.0, "dolor_contenido": 4.0, "dolor_plataforma": 3.0, "dolor_modalidad": 0, "dolor_equipo": 1.0, "dolor_otros": 6.0, "pct_negativos": 12.58, "pct_dolor_docente": 30.0, "pct_dolor_actividades": 35.0, "pct_dolor_contenido": 10.0, "pct_dolor_plataforma": 7.5, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 2.5, "pct_dolor_otros": 15.0, "pct_positivos": 62.9, "pct_neutros": 24.5, "color": "#10b981"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "MARKETING DIGITAL", "promedio_cae": 4.3566666666666665, "total_comentarios": 88, "comentarios_negativos": 35, "comentarios_positivos": 27, "comentarios_neutros": 26.0, "dolor_docente": 6.0, "dolor_actividades": 4.0, "dolor_contenido": 3.0, "dolor_plataforma": 0, "dolor_modalidad": 13.0, "dolor_equipo": 7.0, "dolor_otros": 2.0, "pct_negativos": 39.77, "pct_dolor_docente": 17.1, "pct_dolor_actividades": 11.4, "pct_dolor_contenido": 8.6, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 37.1, "pct_dolor_equipo": 20.0, "pct_dolor_otros": 5.7, "pct_positivos": 30.7, "pct_neutros": 29.5, "color": "#ef4444"}, {"departamento": "912 - CENTRO DE FORMACIÓN HUMANISTA", "materia": "PERSPECTIVA DE GÉNERO", "promedio_cae": 4.6075, "total_comentarios": 280, "comentarios_negativos": 72, "comentarios_positivos": 144, "comentarios_neutros": 64.0, "dolor_docente": 12.0, "dolor_actividades": 24.0, "dolor_contenido": 12.0, "dolor_plataforma": 4.0, "dolor_modalidad": 1.0, "dolor_equipo": 16.0, "dolor_otros": 3.0, "pct_negativos": 25.71, "pct_dolor_docente": 16.7, "pct_dolor_actividades": 33.3, "pct_dolor_contenido": 16.7, "pct_dolor_plataforma": 5.6, "pct_dolor_modalidad": 1.4, "pct_dolor_equipo": 22.2, "pct_dolor_otros": 4.2, "pct_positivos": 51.4, "pct_neutros": 22.9, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "PORTAFOLIOS DE INVERSIÓN", "promedio_cae": 4.308, "total_comentarios": 86, "comentarios_negativos": 33, "comentarios_positivos": 35, "comentarios_neutros": 18.0, "dolor_docente": 12.0, "dolor_actividades": 7.0, "dolor_contenido": 3.0, "dolor_plataforma": 1.0, "dolor_modalidad": 4.0, "dolor_equipo": 0, "dolor_otros": 6.0, "pct_negativos": 38.37, "pct_dolor_docente": 36.4, "pct_dolor_actividades": 21.2, "pct_dolor_contenido": 9.1, "pct_dolor_plataforma": 3.0, "pct_dolor_modalidad": 12.1, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 18.2, "pct_positivos": 40.7, "pct_neutros": 20.9, "color": "#ef4444"}, {"departamento": "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "materia": "PRÁCTICA PROFESIONAL I DE NUTRICIÓN Y CIENCIA DE LOS ALIMENTOS", "promedio_cae": 5.0, "total_comentarios": 10, "comentarios_negativos": 1, "comentarios_positivos": 9, "comentarios_neutros": 0, "dolor_docente": 0, "dolor_actividades": 1.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 10.0, "pct_dolor_docente": 0.0, "pct_dolor_actividades": 100.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 90.0, "pct_neutros": 0, "color": "#10b981"}, {"departamento": "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "materia": "PRÁCTICA PROFESIONAL II DE NUTRICIÓN Y CIENCIA DE LOS ALIMENTOS", "promedio_cae": 4.703333333333333, "total_comentarios": 31, "comentarios_negativos": 5, "comentarios_positivos": 21, "comentarios_neutros": 5.0, "dolor_docente": 1.0, "dolor_actividades": 3.0, "dolor_contenido": 0, "dolor_plataforma": 1.0, "dolor_modalidad": 0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 16.13, "pct_dolor_docente": 20.0, "pct_dolor_actividades": 60.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 20.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 67.7, "pct_neutros": 16.1, "color": "#f59e0b"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "PRÁCTICA VIVENCIAL EN TALLER ARTESANAL", "promedio_cae": 4.99, "total_comentarios": 38, "comentarios_negativos": 4, "comentarios_positivos": 33, "comentarios_neutros": 1.0, "dolor_docente": 1.0, "dolor_actividades": 2.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 0, "dolor_equipo": 0, "dolor_otros": 1.0, "pct_negativos": 10.53, "pct_dolor_docente": 25.0, "pct_dolor_actividades": 50.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 25.0, "pct_positivos": 86.8, "pct_neutros": 2.6, "color": "#10b981"}, {"departamento": "918 - DEPARTAMENTO DE CIENCIAS DE LA SALUD", "materia": "PROGRAMAS DE ALIMENTACIÓN Y NUTRICIÓN", "promedio_cae": 4.06, "total_comentarios": 30, "comentarios_negativos": 11, "comentarios_positivos": 9, "comentarios_neutros": 10.0, "dolor_docente": 4.0, "dolor_actividades": 3.0, "dolor_contenido": 1.0, "dolor_plataforma": 0, "dolor_modalidad": 2.0, "dolor_equipo": 1.0, "dolor_otros": 0, "pct_negativos": 36.67, "pct_dolor_docente": 36.4, "pct_dolor_actividades": 27.3, "pct_dolor_contenido": 9.1, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 18.2, "pct_dolor_equipo": 9.1, "pct_dolor_otros": 0.0, "pct_positivos": 30.0, "pct_neutros": 33.3, "color": "#ef4444"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "PROMOCIÓN DE VENTAS", "promedio_cae": 4.45, "total_comentarios": 164, "comentarios_negativos": 40, "comentarios_positivos": 84, "comentarios_neutros": 40.0, "dolor_docente": 16.0, "dolor_actividades": 3.0, "dolor_contenido": 3.0, "dolor_plataforma": 2.0, "dolor_modalidad": 7.0, "dolor_equipo": 7.0, "dolor_otros": 2.0, "pct_negativos": 24.39, "pct_dolor_docente": 40.0, "pct_dolor_actividades": 7.5, "pct_dolor_contenido": 7.5, "pct_dolor_plataforma": 5.0, "pct_dolor_modalidad": 17.5, "pct_dolor_equipo": 17.5, "pct_dolor_otros": 5.0, "pct_positivos": 51.2, "pct_neutros": 24.4, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "RESPONSABILIDAD SOCIAL CORPORATIVA", "promedio_cae": 4.5488888888888885, "total_comentarios": 466, "comentarios_negativos": 114, "comentarios_positivos": 223, "comentarios_neutros": 129.0, "dolor_docente": 29.0, "dolor_actividades": 30.0, "dolor_contenido": 17.0, "dolor_plataforma": 5.0, "dolor_modalidad": 14.0, "dolor_equipo": 14.0, "dolor_otros": 5.0, "pct_negativos": 24.46, "pct_dolor_docente": 25.4, "pct_dolor_actividades": 26.3, "pct_dolor_contenido": 14.9, "pct_dolor_plataforma": 4.4, "pct_dolor_modalidad": 12.3, "pct_dolor_equipo": 12.3, "pct_dolor_otros": 4.4, "pct_positivos": 47.9, "pct_neutros": 27.7, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "SISTEMAS ORGANIZACIONALES", "promedio_cae": 4.596666666666667, "total_comentarios": 90, "comentarios_negativos": 18, "comentarios_positivos": 51, "comentarios_neutros": 21.0, "dolor_docente": 1.0, "dolor_actividades": 11.0, "dolor_contenido": 3.0, "dolor_plataforma": 0, "dolor_modalidad": 1.0, "dolor_equipo": 0, "dolor_otros": 2.0, "pct_negativos": 20.0, "pct_dolor_docente": 5.6, "pct_dolor_actividades": 61.1, "pct_dolor_contenido": 16.7, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 5.6, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 11.1, "pct_positivos": 56.7, "pct_neutros": 23.3, "color": "#f59e0b"}, {"departamento": "912 - CENTRO DE FORMACIÓN HUMANISTA", "materia": "SOCIEDAD Y CULTURA DE PAZ", "promedio_cae": 4.572222222222223, "total_comentarios": 302, "comentarios_negativos": 76, "comentarios_positivos": 146, "comentarios_neutros": 80.0, "dolor_docente": 20.0, "dolor_actividades": 33.0, "dolor_contenido": 10.0, "dolor_plataforma": 6.0, "dolor_modalidad": 2.0, "dolor_equipo": 1.0, "dolor_otros": 4.0, "pct_negativos": 25.17, "pct_dolor_docente": 26.3, "pct_dolor_actividades": 43.4, "pct_dolor_contenido": 13.2, "pct_dolor_plataforma": 7.9, "pct_dolor_modalidad": 2.6, "pct_dolor_equipo": 1.3, "pct_dolor_otros": 5.3, "pct_positivos": 48.3, "pct_neutros": 26.5, "color": "#f59e0b"}, {"departamento": "912 - CENTRO DE FORMACIÓN HUMANISTA", "materia": "SOCIEDAD Y DESARROLLO", "promedio_cae": 4.785, "total_comentarios": 274, "comentarios_negativos": 46, "comentarios_positivos": 162, "comentarios_neutros": 66.0, "dolor_docente": 11.0, "dolor_actividades": 23.0, "dolor_contenido": 6.0, "dolor_plataforma": 1.0, "dolor_modalidad": 0, "dolor_equipo": 2.0, "dolor_otros": 3.0, "pct_negativos": 16.79, "pct_dolor_docente": 23.9, "pct_dolor_actividades": 50.0, "pct_dolor_contenido": 13.0, "pct_dolor_plataforma": 2.2, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 4.3, "pct_dolor_otros": 6.5, "pct_positivos": 59.1, "pct_neutros": 24.1, "color": "#f59e0b"}, {"departamento": "905 - DEPARTAMENTO DE CIENCIAS SOCIALES Y HUMANIDADES", "materia": "SOCIOLOGÍA JURÍDICA", "promedio_cae": 4.1025, "total_comentarios": 130, "comentarios_negativos": 55, "comentarios_positivos": 42, "comentarios_neutros": 33.0, "dolor_docente": 13.0, "dolor_actividades": 14.0, "dolor_contenido": 7.0, "dolor_plataforma": 0, "dolor_modalidad": 18.0, "dolor_equipo": 1.0, "dolor_otros": 2.0, "pct_negativos": 42.31, "pct_dolor_docente": 23.6, "pct_dolor_actividades": 25.5, "pct_dolor_contenido": 12.7, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 32.7, "pct_dolor_equipo": 1.8, "pct_dolor_otros": 3.6, "pct_positivos": 32.3, "pct_neutros": 25.4, "color": "#ef4444"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "TALLER DE SÍNTESIS Y EVALUACIÓN DE CIENCIAS ECONÓMICO ADMINISTRATIVAS II", "promedio_cae": 4.4750000000000005, "total_comentarios": 564, "comentarios_negativos": 135, "comentarios_positivos": 297, "comentarios_neutros": 132.0, "dolor_docente": 48.0, "dolor_actividades": 37.0, "dolor_contenido": 10.0, "dolor_plataforma": 6.0, "dolor_modalidad": 20.0, "dolor_equipo": 7.0, "dolor_otros": 7.0, "pct_negativos": 23.94, "pct_dolor_docente": 35.6, "pct_dolor_actividades": 27.4, "pct_dolor_contenido": 7.4, "pct_dolor_plataforma": 4.4, "pct_dolor_modalidad": 14.8, "pct_dolor_equipo": 5.2, "pct_dolor_otros": 5.2, "pct_positivos": 52.7, "pct_neutros": 23.4, "color": "#f59e0b"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "TALLER DE SÍNTESIS Y EVALUACIÓN DE DISEÑO DE PRODUCTO III", "promedio_cae": 4.875, "total_comentarios": 38, "comentarios_negativos": 6, "comentarios_positivos": 29, "comentarios_neutros": 3.0, "dolor_docente": 4.0, "dolor_actividades": 2.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 15.79, "pct_dolor_docente": 66.7, "pct_dolor_actividades": 33.3, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 0.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 76.3, "pct_neutros": 7.9, "color": "#f59e0b"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "TEMAS SELECTOS DE CONTADURÍA Y ESTRATEGIAS FINANCIERAS I", "promedio_cae": 4.905, "total_comentarios": 46, "comentarios_negativos": 4, "comentarios_positivos": 29, "comentarios_neutros": 13.0, "dolor_docente": 2.0, "dolor_actividades": 1.0, "dolor_contenido": 0, "dolor_plataforma": 0, "dolor_modalidad": 1.0, "dolor_equipo": 0, "dolor_otros": 0, "pct_negativos": 8.7, "pct_dolor_docente": 50.0, "pct_dolor_actividades": 25.0, "pct_dolor_contenido": 0.0, "pct_dolor_plataforma": 0.0, "pct_dolor_modalidad": 25.0, "pct_dolor_equipo": 0.0, "pct_dolor_otros": 0.0, "pct_positivos": 63.0, "pct_neutros": 28.3, "color": "#10b981"}, {"departamento": "1 - DEPARTAMENTO DE ARQUITECTURA Y DISEÑO", "materia": "TEORÍA E HISTORIA DE LA ARQUITECTURA I", "promedio_cae": 4.4775, "total_comentarios": 210, "comentarios_negativos": 86, "comentarios_positivos": 92, "comentarios_neutros": 32.0, "dolor_docente": 12.0, "dolor_actividades": 25.0, "dolor_contenido": 6.0, "dolor_plataforma": 4.0, "dolor_modalidad": 36.0, "dolor_equipo": 1.0, "dolor_otros": 2.0, "pct_negativos": 40.95, "pct_dolor_docente": 14.0, "pct_dolor_actividades": 29.1, "pct_dolor_contenido": 7.0, "pct_dolor_plataforma": 4.7, "pct_dolor_modalidad": 41.9, "pct_dolor_equipo": 1.2, "pct_dolor_otros": 2.3, "pct_positivos": 43.8, "pct_neutros": 15.2, "color": "#ef4444"}, {"departamento": "2 - DEPARTAMENTO DE CIENCIAS ECONÓMICO-ADMINISTRATIVAS", "materia": "TOMA DE DECISIONES Y SIMULACIÓN DE NEGOCIOS", "promedio_cae": 4.567142857142857, "total_comentarios": 214, "comentarios_negativos": 59, "comentarios_positivos": 98, "comentarios_neutros": 57.0, "dolor_docente": 7.0, "dolor_actividades": 10.0, "dolor_contenido": 24.0, "dolor_plataforma": 1.0, "dolor_modalidad": 14.0, "dolor_equipo": 3.0, "dolor_otros": 0, "pct_negativos": 27.57, "pct_dolor_docente": 11.9, "pct_dolor_actividades": 16.9, "pct_dolor_contenido": 40.7, "pct_dolor_plataforma": 1.7, "pct_dolor_modalidad": 23.7, "pct_dolor_equipo": 5.1, "pct_dolor_otros": 0.0, "pct_positivos": 45.8, "pct_neutros": 26.6, "color": "#f59e0b"}];
+
+        // Mapeo de colores (Old -> New Palette)
+        // Green -> Mint Green (#95D9CC)
+        // Yellow -> Lavender Medium (#B4B0E8)
+        // Red -> Purple Accent (#5B52E8)
+
+        function getColor(oldColor) {
+            // Normalize inputs
+            const color = oldColor.toLowerCase();
+
+            // Map specific original colors to new palette
+            if (color === '#10b981') return '#95D9CC'; // Green -> Mint
+            if (color === '#f59e0b') return '#B4B0E8'; // Yellow -> Lavender
+            if (color === '#ef4444') return '#5B52E8'; // Red -> Purple Accent
+
+            // Fallback
+            return '#B4B0E8';
+        }
 
         let currentFilter = 'Todos';
         
@@ -307,7 +400,7 @@
         departamentos.forEach(dept => {
             const btn = document.createElement('button');
             btn.className = 'filter-btn' + (dept === 'Todos' ? ' active' : '');
-            btn.textContent = dept === 'Todos' ? '🌐 Todos' : dept;
+            btn.textContent = dept === 'Todos' ? 'Todos' : dept;
             btn.onclick = () => filterByDepartment(dept);
             filterContainer.appendChild(btn);
         });
@@ -318,7 +411,7 @@
             // Actualizar botones activos
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
-                if ((dept === 'Todos' && btn.textContent === '🌐 Todos') || 
+                if ((dept === 'Todos' && btn.textContent === 'Todos') ||
                     btn.textContent === dept) {
                     btn.classList.add('active');
                 }
@@ -336,7 +429,8 @@
             const x = filteredData.map(d => d.promedio_cae);
             const y = filteredData.map(d => d.comentarios_negativos);
             const sizes = filteredData.map(d => d.total_comentarios);
-            const colors = filteredData.map(d => d.color === '#ef4444' ? '#9E1B32' : d.color);
+            // Apply new color mapping
+            const colors = filteredData.map(d => getColor(d.color));
             
             // Crear texto del hover
             const hoverText = filteredData.map(d => {
@@ -351,17 +445,24 @@
                 if (d.pct_dolor_otros > 0) dolores.push(`❓ Otros: ${d.pct_dolor_otros}%`);
                 
                 const doloresText = dolores.length > 0 
-                    ? '<br><br><b>Tipos de Dolor:</b><br>' + dolores.join('<br>')
+                    ? '<div style="margin-top: 12px; font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.4;">Tipos de Dolor:<br>' + dolores.join('<br>') + '</div>'
                     : '';
                 
-                return `<b>${d.materia}</b><br>` +
-                       `<i>${d.departamento}</i><br><br>` +
-                       `<b>Promedio CAE:</b> ${d.promedio_cae.toFixed(2)}<br>` +
-                       `<b>Total Comentarios:</b> ${d.total_comentarios}<br>` +
-                       `  • Negativos: ${d.comentarios_negativos} (${d.pct_negativos}%)<br>` +
-                       `  • Neutrales: ${d.comentarios_neutros} (${d.pct_neutros}%)<br>` +
-                       `  • Positivos: ${d.comentarios_positivos} (${d.pct_positivos}%)` +
-                       doloresText;
+                return `
+                    <div style="font-family: 'Inter', sans-serif;">
+                        <div style="font-size: 16px; font-weight: 700; color: white; margin-bottom: 2px;">${d.materia}</div>
+                        <div style="font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.7); margin-bottom: 12px;">${d.departamento}</div>
+
+                        <div style="font-size: 13px; color: rgba(255,255,255,0.95); margin-bottom: 2px;">Promedio CAE: <b>${d.promedio_cae.toFixed(2)}</b></div>
+                        <div style="font-size: 13px; color: rgba(255,255,255,0.95);">Total Comentarios: <b>${d.total_comentarios}</b></div>
+
+                        <div style="margin-top: 8px; font-size: 13px; color: rgba(255,255,255,0.9);">
+                             • Negativos: ${d.comentarios_negativos} (${d.pct_negativos}%)<br>
+                             • Neutrales: ${d.comentarios_neutros} (${d.pct_neutros}%)<br>
+                             • Positivos: ${d.comentarios_positivos} (${d.pct_positivos}%)
+                        </div>
+                        ${doloresText}
+                    </div>`;
             });
 
             const trace = {
@@ -370,18 +471,18 @@
                 mode: 'markers',
                 type: 'scatter',
                 text: hoverText,
-                hovertemplate: '%{text}<extra></extra>',
+                hoverinfo: 'text', // Use custom HTML text only
                 marker: {
                     size: sizes,
                     sizemode: 'diameter',
-                    sizeref: Math.max(...sizes) / 40,
+                    sizeref: Math.max(...sizes) / 45, // Adjusted size ref
                     sizemin: 8,
                     color: colors,
                     line: {
                         color: '#fff',
                         width: 2
                     },
-                    opacity: 0.85
+                    opacity: 0.9
                 }
             };
 
@@ -394,94 +495,106 @@
             const layout = {
                 title: {
                     text: '<b>Mapa de Salud Digital por Materia</b><br>' +
-                          '<span style="font-size: 14px; color: #6B7280; font-family: \'Segoe UI\', \'Roboto\', sans-serif; font-weight: 400;">Tamaño = Volumen de Comentarios | Color = % de Negativos</span>',
-                    font: { size: 24, family: 'Segoe UI, Roboto, sans-serif', color: '#111827' },
+                          '<span style="font-size: 14px; color: #6B7280; font-family: \'Inter\', sans-serif; font-weight: 400;">Tamaño = Volumen | Color = % Negativos</span>',
+                    font: { size: 28, family: 'Satoshi, Inter, sans-serif', color: '#1A1B2E' },
                     x: 0.02,
-                    xanchor: 'left'
+                    xanchor: 'left',
+                    y: 0.95
                 },
                 xaxis: {
                     title: '<b>Promedio CAE (Desempeño Académico)</b>',
-                    titlefont: { size: 14, family: 'Segoe UI, Roboto, sans-serif', color: '#374151' },
+                    titlefont: { size: 13, family: 'Inter, sans-serif', color: '#6B7280' },
                     range: xRange,
-                    gridcolor: '#F3F4F6',
+                    gridcolor: '#E8E9F3',
                     zeroline: false,
-                    tickfont: { family: 'Segoe UI, Roboto, sans-serif', color: '#6B7280' }
+                    tickfont: { family: 'Inter, sans-serif', color: '#6B7280', size: 12 }
                 },
                 yaxis: {
                     title: '<b>Comentarios Negativos</b>',
-                    titlefont: { size: 14, family: 'Segoe UI, Roboto, sans-serif', color: '#374151' },
+                    titlefont: { size: 13, family: 'Inter, sans-serif', color: '#6B7280' },
                     range: yRange,
-                    gridcolor: '#F3F4F6',
+                    gridcolor: '#E8E9F3',
                     zeroline: false,
-                    tickfont: { family: 'Segoe UI, Roboto, sans-serif', color: '#6B7280' }
+                    tickfont: { family: 'Inter, sans-serif', color: '#6B7280', size: 12 }
                 },
                 hovermode: 'closest',
-                plot_bgcolor: '#FFFFFF',
-                paper_bgcolor: '#FFFFFF',
+                hoverlabel: {
+                    bgcolor: '#2B2D42', // Charcoal background for tooltips
+                    bordercolor: '#2B2D42',
+                    font: { family: 'Inter, sans-serif', color: 'white' },
+                    align: 'left'
+                },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
                 margin: { l: 80, r: 50, t: 100, b: 80 },
                 height: 700,
                 shapes: [
-                    // Línea vertical para cuadrantes
+                    // Grid dividers (subtle)
                     {
                         type: 'line',
                         x0: xMid, x1: xMid,
                         y0: yRange[0], y1: yRange[1],
-                        line: { color: '#D1D5DB', width: 1, dash: 'dash' }
+                        line: { color: '#E8E9F3', width: 2, dash: 'dash' }
                     },
-                    // Línea horizontal para cuadrantes
                     {
                         type: 'line',
                         x0: xRange[0], x1: xRange[1],
                         y0: yMid, y1: yMid,
-                        line: { color: '#D1D5DB', width: 1, dash: 'dash' }
+                        line: { color: '#E8E9F3', width: 2, dash: 'dash' }
                     }
                 ],
                 annotations: [
-                    // Cuadrante superior derecho
+                    // Cuadrante superior derecho (High CAE, High Negative) - Crisis?
+                    // Ref colors: Red -> Purple Accent (#5B52E8)
                     {
                         x: xRange[1] - 0.05,
                         y: yRange[1] - 5,
                         text: '🔴 Crisis Silenciosa<br><span style="font-size: 11px; font-weight: 400;">Alto CAE + Muchos Negativos</span>',
                         showarrow: false,
-                        font: { size: 13, color: '#9E1B32', family: 'Segoe UI, Roboto, sans-serif', weight: 600 },
+                        font: { size: 13, color: '#5B52E8', family: 'Inter, sans-serif', weight: 600 },
                         bgcolor: 'rgba(255, 255, 255, 0.95)',
-                        borderpad: 10,
-                        bordercolor: '#FECACA',
+                        borderpad: 12,
+                        bordercolor: '#D4D1F5',
                         borderwidth: 1,
                         xanchor: 'right',
-                        rx: 5,
-                        ry: 5
+                        rx: 12,
+                        ry: 12,
+                        shadow: '0 4px 12px rgba(0,0,0,0.05)'
                     },
-                    // Cuadrante superior izquierdo
+                    // Cuadrante superior izquierdo (Low CAE, High Negative) - Critical
+                    // Ref colors: Warning -> Lavender (#B4B0E8) ... or maybe darker?
+                    // Let's use a darker shade for text
                     {
                         x: xRange[0] + 0.05,
                         y: yRange[1] - 5,
                         text: '⚠️ Alerta Crítica<br><span style="font-size: 11px; font-weight: 400;">Bajo CAE + Muchos Negativos</span>',
                         showarrow: false,
-                        font: { size: 13, color: '#B45309', family: 'Segoe UI, Roboto, sans-serif', weight: 600 },
+                        font: { size: 13, color: '#7B6FE8', family: 'Inter, sans-serif', weight: 600 },
                         bgcolor: 'rgba(255, 255, 255, 0.95)',
-                        borderpad: 10,
-                        bordercolor: '#FDE68A',
+                        borderpad: 12,
+                        bordercolor: '#B4B0E8',
                         borderwidth: 1,
                         xanchor: 'left',
-                        rx: 5,
-                        ry: 5
+                        rx: 12,
+                        ry: 12
                     },
-                    // Cuadrante inferior derecho
+                    // Cuadrante inferior derecho (High CAE, Low Negative) - Optimal
+                    // Ref colors: Green -> Mint (#95D9CC)
+                    // Use slightly darker teal for text readability
                     {
                         x: xRange[1] - 0.05,
                         y: yRange[0] + 5,
                         text: '✅ Zona Óptima<br><span style="font-size: 11px; font-weight: 400;">Alto CAE + Pocos Negativos</span>',
                         showarrow: false,
-                        font: { size: 13, color: '#059669', family: 'Segoe UI, Roboto, sans-serif', weight: 600 },
+                        font: { size: 13, color: '#4B9C90', family: 'Inter, sans-serif', weight: 600 },
                         bgcolor: 'rgba(255, 255, 255, 0.95)',
-                        borderpad: 10,
-                        bordercolor: '#A7F3D0',
+                        borderpad: 12,
+                        bordercolor: '#95D9CC',
                         borderwidth: 1,
                         xanchor: 'right',
                         yanchor: 'bottom',
-                        rx: 5,
-                        ry: 5
+                        rx: 12,
+                        ry: 12
                     }
                 ]
             };
